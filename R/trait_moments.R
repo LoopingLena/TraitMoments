@@ -9,8 +9,7 @@
 #' @return Community weighted means and all higher moments (variance, skewness and kurtosis) of trait distributions.
 #' @examples
 #' result <- trait_moments(example_communitys, example_traits, n_species = 5, abundance = 80)
-
-
+#' @export
 
 trait_moments <- function(communities, traits, n_species = 4, abundance = 80) {
 
