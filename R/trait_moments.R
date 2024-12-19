@@ -27,7 +27,7 @@ trait_moments <- function(communities, traits, n_species = 4, abundance = 80) {
   traits$Species <- row.names(traits)
   traits <- gather(traits, "Trait", "Value", -Species)
 
-  communities_traits <- full_join(communities, traits, by = "Species", relationship = "many-to-many")
+  community_traits <- full_join(communities, traits, by = "Species", relationship = "many-to-many")
 
   com_trait <- community_traits %>%
     select(comID, Trait) %>%
