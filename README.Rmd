@@ -4,12 +4,12 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
 ```
 
 # TraitMoments
 
-TraitMoments provides an efficient way to calculate all moments (mean, variance, skewness and kurtosis) of trait distribution across large  of community and traits datasets.
-
+TraitMoments provides an efficient way to calculate all moments (mean, variance, skewness and kurtosis) of trait distribution across large community and traits datasets. The calculation is performed according to the equations number 1 to 4 from Le Bagousse-Pinguet et al. (2017). The calculation of all moments provides detailed insights into the precise shape of trait distributions and allows the derived parameters to be linked to established frameworks of functional diversity (Bello et al. 2021, Bagousse-Pinguet et al. 2021) and the filtering concept (Enquist et al. 2015). 
 
 ## Installation
 
@@ -20,5 +20,75 @@ Install the latest version from [GitHub](https://github.com/) with:
 devtools::install_github("SchreinerFR/TraitMoments")
 ```
 
+## View documentation
+
+Load package and see the help for the function trait_moments:
+
+```{r, message=FALSE}
+library(TraitMoments)
+?trait_moments
+```
+
+## Example data
+
+TraitMoments provides two example data frames. The data frame 'communities' contains the abundances for 93 species from 20 communities and the 'traits' provides information on seven traits for the corresponding species. For some species, no information is available for certain traits, so the data frame 'traits' contains some NAs. Since both data frames are large, we will only inspect the heads in this example:
+
+```{r, message=FALSE}
+data(trait_moments_data)
+communities[1:20,1:5] 
+traits[1:6,1:ncol(traits)] 
+```
+
+## Example calculations
+
+### First: with default settings
+
+Now we use the function 'trait_moments' to calculate the moments of all trait distributions for each trait and each community. The function will perform the calculation for all 140 combinations of trait and community at once. Since the resulting data frame is quite  large, we will only inspect the head in this example:
+
+```{r}
+result <- trait_moments(communities, traits)
+dim(result)
+result[1:20,1:ncol(result)]
+```
+
+
+### Second: with settings to control the trade-off between reliable results and the number of NAs obtained
+
+```{r}
+result <- trait_moments(communities, traits, n_species = 1, abundance = 50)
+result[1:20,1:ncol(result)]
+```
+
+
+## Final note on CWMs
+
+The function 'functcomp' from the package 'FD' is often used to calculate community weighted means (CWMs). Here this function is applied to our data:
+
+```{r, message=FALSE, warning=FALSE}
+library(FD)
+functcomp(traits, as.matrix(communities))
+```
+
+However, 'functcomp' does not contain any options to define a cumulative relative abundance for which trait information should be present, in order to obtain reliable results. In many cases it is advisable to set a threshold value of 80 % for the cumulative relative abundance.   
+
+Now a calculation is performed with 'trait_moments', we set n_species = 0 and abundance = 80:
+
+```{r}
+result <- trait_moments(communities, traits, n_species = 0, abundance = 80)
+result[1:20,1:ncol(result)]
+```
+
+We get a warning that for n_species = 0 only CWMs but no moments can be calculated. Since this is our goal in this case we can ignore this warning. 'Trait_moments' generates exactly the same CWMs as 'functcomp', but if there is not enough trait information available to obtain reliable results (level can be chosen by the user), an NA is returned.
+
+
+# References
+
+Bello, F. de, Carmona, C.P., Dias, A.T.C., Götzenberger, L., Moretti, M. & Berg, M.P. (2021) Handbook of Trait-Based Ecology. Cambridge University Press.
+
+Enquist, B.J., Norberg, J., Bonser, S.P., Violle, C., Webb, C.T. & Henderson, A. et al. (2015) Chapter Nine - Scaling from Traits to Ecosystems: Developing a General Trait Driver Theory via Integrating Trait-Based and Metabolic Scaling Theories. In: Pawar, S., Woodward, G. & Dell, A.I. (Eds.) Trait-Based Ecology - From Structure to Function. Academic Press.
+
+Le Bagousse-Pinguet, Y., Gross, N., Maestre, F.T., Maire, V., Bello, F. de & Fonseca, C.R. et al. (2017) Testing the environmental filtering concept in global drylands. Journal of Ecology, 105(4), 1058–1069. Available from: https://doi.org/10.1111/1365-2745.12735.
+
+Le Bagousse-Pinguet, Y., Gross, N., Saiz, H., Maestre, F.T., Ruiz, S. & Dacal, M. et al. (2021) Functional rarity and evenness are key facets of biodiversity to boost multifunctionality. Proceedings of the National Academy of Sciences of the United States of America, 118(7). Available from: https://doi.org/10.1073/pnas.2019355118.
 
 
