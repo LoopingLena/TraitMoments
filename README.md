@@ -1,15 +1,21 @@
 
 # TraitMoments
 
-TraitMoments provides an efficient way to calculate all moments (mean,
-variance, skewness and kurtosis) of trait distribution across large
-community and traits datasets. The calculation is performed according to
-the equations number 1 to 4 from Le Bagousse-Pinguet et al. (2017). The
-calculation of all moments provides detailed insights into the precise
-shape of trait distributions and allows the derived parameters to be
-linked to established frameworks of functional diversity (Bello et
-al. 2021, Bagousse-Pinguet et al. 2021) and the filtering concept
-(Enquist et al. 2015).
+<!-- badges: start -->
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+<!-- badges: end -->
+
+TraitMoments provides an efficient function to calculate all moments
+(mean, variance, skewness and kurtosis) of trait distribution across
+large community and traits datasets. The calculation is performed
+according to the equations number 1 to 4 from Le Bagousse-Pinguet et
+al. (2017). The calculation of all moments provides detailed insights
+into the precise shape of trait distributions and allows the derived
+parameters to be linked to established frameworks of functional
+diversity (Bello et al. 2021, Bagousse-Pinguet et al. 2021) and the
+filtering concept (Enquist et al. 2015).
 
 ## Installation
 
@@ -22,7 +28,7 @@ devtools::install_github("SchreinerFR/TraitMoments")
 
 ## View documentation
 
-Load package and see the help for the function trait_moments:
+Load package and see the help for the function ‘trait_moments’:
 
 ``` r
 library(TraitMoments)
@@ -36,7 +42,8 @@ TraitMoments provides two example data frames. The data frame
 and the ‘traits’ provides information on seven traits for the
 corresponding species. For some species, no information is available for
 certain traits, so the data frame ‘traits’ contains some NAs. Since both
-data frames are large, we will only inspect the heads in this example:
+data frames are quite large, we will only inspect the heads in this
+example:
 
 ``` r
 data(trait_moments_data)

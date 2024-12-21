@@ -9,6 +9,10 @@ library(tidyverse)
 
 # TraitMoments
 
+<!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+<!-- badges: end -->
+
 TraitMoments provides an efficient function to calculate all moments (mean, variance, skewness and kurtosis) of trait distribution across large community and traits datasets. The calculation is performed according to the equations number 1 to 4 from Le Bagousse-Pinguet et al. (2017). The calculation of all moments provides detailed insights into the precise shape of trait distributions and allows the derived parameters to be linked to established frameworks of functional diversity (Bello et al. 2021, Bagousse-Pinguet et al. 2021) and the filtering concept (Enquist et al. 2015). 
 
 ## Installation
