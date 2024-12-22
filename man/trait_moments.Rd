@@ -24,7 +24,9 @@ See detailed information on the calculation in the github documentation:
 \href{https://github.com/SchreinerFR/TraitMoments}{SchreinerFR/TraitMoments}
 }
 \examples{
+\dontrun{
 result <- trait_moments(example_communitys, example_traits, n_species = 5, abundance = 80)
+}
 }
 \references{
 Le Bagousse-Pinguet, Y., Gross, N., Maestre, F.T., Maire, V., Bello, F. de & Fonseca, C.R. et al. (2017) Testing the environmental filtering concept in global drylands. Journal of Ecology, 105(4), 1058–1069. Available from: https://doi.org/10.1111/1365-2745.12735.

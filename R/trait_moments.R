@@ -11,7 +11,9 @@
 #' @param abundance Cumulative relative abundance for which trait information must be present. If the criterion is not met, NA is returned for the trait-plot-combination. Default is 80%.
 #' @return Mean (CWM), variance, skewness and kurtosis of all trait distributions for each trait and each community.
 #' @examples
+#' \dontrun{
 #' result <- trait_moments(example_communitys, example_traits, n_species = 5, abundance = 80)
+#' }
 #' @references
 #' Le Bagousse-Pinguet, Y., Gross, N., Maestre, F.T., Maire, V., Bello, F. de & Fonseca, C.R. et al. (2017) Testing the environmental filtering concept in global drylands. Journal of Ecology, 105(4), 1058–1069. Available from: https://doi.org/10.1111/1365-2745.12735.
 #' @export
