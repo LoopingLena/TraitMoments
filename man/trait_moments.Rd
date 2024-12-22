@@ -19,7 +19,34 @@ trait_moments(communities, traits, n_species = 4, abundance = 80)
 Mean (CWM), variance, skewness and kurtosis of all trait distributions for each trait and each community.
 }
 \description{
-trait_moments calculates all moments (mean, variance, skewness and kurtosis) of trait distribution across large community and traits datasets. The calculation is performed according to the equations number 1 to 4 from Le Bagousse-Pinguet et al. (2017).
+trait_moments calculates all moments (mean, variance, skewness and kurtosis) of trait distribution across large community and traits datasets. The calculation is performed according to the equations number 1 to 4 from Le Bagousse-Pinguet et al. (2017):
+}
+\details{
+[
+\small
+Mean_{j} = \sum_{i}^{n} p_i T_i
+\tag{1}
+]
+
+[
+\small
+Variance_{j} = \sum_{i}^{n} p_i (T_i - Mean_j)^2
+\tag{2}
+]
+
+[
+\small
+Skewness_{j} = \sum_{i}^{n} \frac{p_i (T_i - Mean_j)^3}{Variance_j^{\frac{3}{2}}}
+\tag{3}
+]
+
+[
+\small
+Kurtosis_{j} = \sum_{i}^{n} \frac{p_i (T_i - Mean_j)^4}{Variance_j^2}
+\tag{4}
+]
+
+where $p_i$ is the relative abundance and $T_i$ the trait value of the species \emph{i}, \emph{n} is the number of species in a community \emph{j} with available trait information and the sum of relative abundance is equal to 100\% for each community.
 }
 \examples{
 result <- trait_moments(example_communitys, example_traits, n_species = 5, abundance = 80)
