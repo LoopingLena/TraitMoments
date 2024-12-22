@@ -2,6 +2,35 @@
 #' trait_moments
 #'
 #' trait_moments calculates all moments (mean, variance, skewness and kurtosis) of trait distribution across large community and traits datasets. The calculation is performed according to the equations number 1 to 4 from Le Bagousse-Pinguet et al. (2017).
+#' \[
+#'\small
+#'Mean_{j} = \sum_{i}^{n} p_i T_i
+#'\tag{1}
+#'\]
+#'
+#'
+#'\[
+#'  \small
+#'  Variance_{j} = \sum_{i}^{n} p_i (T_i - Mean_j)^2
+#'  \tag{2}
+#'  \]
+#'
+#'
+#'\[
+#'  \small
+#'  Skewness_{j} = \sum_{i}^{n} \frac{p_i (T_i - Mean_j)^3}{Variance_j^{\frac{3}{2}}}
+#'  \tag{3}
+#'  \]
+#'
+#'
+#'\[
+#'  \small
+#'  Kurtosis_{j} = \sum_{i}^{n} \frac{p_i (T_i - Mean_j)^4}{Variance_j^2}
+#'  \tag{4}
+#'  \]
+#'
+#'where $p_i$ is the relative abundance and $T_i$ the trait value of the species _i_, _n_ is the number of species in a community _j_ with available trait information and the sum of relative abundance is equal to 100% for each community.
+#'
 #' @param communities The species-plot-matrix as data frame. Column names must be species IDs and row names community IDs. It is not mandatory to provide relative abundances, but abundances should be on a nominal scale.
 #' @param traits The species-trait-matrix as data frame. Column names must be trait IDs and row names species IDs. The species IDs must be consistent with those from the species-plot-matrix. Trait values have to be numeric.
 #' @param n_species Number of predominant species for which trait information must be present. If the criterion is not met, NA is returned for the trait-plot-combination. Default is 4.
