@@ -1,6 +1,8 @@
 
 # TraitMoments
 
+Efficient calculation of trait distribution moments.
+
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -11,15 +13,46 @@ TraitMoments provides an efficient function to calculate all moments
 (mean, variance, skewness and kurtosis) of trait distribution across
 large community and traits datasets. The calculation is performed
 according to the equations number 1 to 4 from Le Bagousse-Pinguet et
-al. (2017). The calculation of all moments provides detailed insights
-into the precise shape of trait distributions and allows the derived
-parameters to be linked to established frameworks of functional
-diversity (Bello et al. 2021, Bagousse-Pinguet et al. 2021) and the
-filtering concept (Enquist et al. 2015).
+al. (2017):
+
+$$
+\small
+Mean_{j} = \sum_{i}^{n} p_i T_i
+\tag{1}
+$$
+
+$$
+\small
+Variance_{j} = \sum_{i}^{n} p_i (T_i - Mean_j)^2
+\tag{2}
+$$
+
+$$
+\small
+Skewness_{j} = \sum_{i}^{n} \frac{p_i (T_i - Mean_j)^3}{Variance_j^{\frac{3}{2}}}
+\tag{3}
+$$
+
+$$
+\small
+Kurtosis_{j} = \sum_{i}^{n} \frac{p_i (T_i - Mean_j)^4}{Variance_j^2}
+\tag{4}
+$$
+
+where $p_i$ is the relative abundance and $T_i$ the trait value of the
+species *i*, *n* is the number of species in a community *j* with
+available trait information and the sum of relative abundance is equal
+to 100% for each community.
+
+The calculation of all moments provides detailed insights into the
+precise shape of trait distributions and allows the derived parameters
+to be linked to established frameworks of functional diversity (Bello et
+al. 2021, Bagousse-Pinguet et al. 2021) and the filtering concept
+(Enquist et al. 2015).
 
 ## Installation
 
-Install the latest version from GitHub with:
+Install the latest version from GitHub:
 
 ``` r
 # install.packages("devtools")
@@ -40,11 +73,10 @@ library(TraitMoments)
 
 TraitMoments provides two example data frames. The data frame
 ‘communities’ contains the abundances for 93 species from 20 communities
-and the ‘traits’ provides information on seven traits for the
-corresponding species. For some species, no information is available for
-certain traits, so the data frame ‘traits’ contains some NAs. Since both
-data frames are quite large, we will only inspect the heads in this
-example:
+and ‘traits’ provides information on seven traits for the corresponding
+species. For some species, no information is available for certain
+traits, so the data frame ‘traits’ contains some NAs. Since both data
+frames are quite large, we just inspect the heads in this example:
 
 ``` r
 data(trait_moments_data)
@@ -92,8 +124,7 @@ traits[1:6,1:ncol(traits)]
 Now we use the function ‘trait_moments’ to calculate the moments of all
 trait distributions for each trait and each community. The function will
 perform the calculation for all 140 combinations of trait and community
-at once. Since the resulting data frame is quite large, we will only
-inspect the head in this example:
+at once. We just inspect the head of the result:
 
 ``` r
 result <- trait_moments(communities, traits)
@@ -106,31 +137,46 @@ dim(result)
 result[1:20,1:ncol(result)]
 ```
 
-    ## # A tibble: 20 × 6
-    ##    comID          Trait      mean    variance skewness kurtosis
-    ##    <chr>          <chr>     <dbl>       <dbl>    <dbl>    <dbl>
-    ##  1 " Community.1" Trait.1   0.371     0.0378     0.989     2.88
-    ##  2 " Community.1" Trait.2   1.93      6.48       1.76      4.83
-    ##  3 " Community.1" Trait.3  25.2      73.6        1.76      5.51
-    ##  4 " Community.1" Trait.4   0.266     0.00596    0.101     1.57
-    ##  5 " Community.1" Trait.5  NA        NA         NA        NA   
-    ##  6 " Community.1" Trait.6  NA        NA         NA        NA   
-    ##  7 " Community.1" Trait.7  NA        NA         NA        NA   
-    ##  8 " Community.2" Trait.1   0.368     0.0228     0.913     2.82
-    ##  9 " Community.2" Trait.2   1.89      1.67       5.77     72.5 
-    ## 10 " Community.2" Trait.3  NA        NA         NA        NA   
-    ## 11 " Community.2" Trait.4   0.255     0.00555    0.741     1.97
-    ## 12 " Community.2" Trait.5  NA        NA         NA        NA   
-    ## 13 " Community.2" Trait.6  NA        NA         NA        NA   
-    ## 14 " Community.2" Trait.7  NA        NA         NA        NA   
-    ## 15 " Community.3" Trait.1   0.363     0.0343     0.412     2.01
-    ## 16 " Community.3" Trait.2   1.37      2.18       4.78     41.1 
-    ## 17 " Community.3" Trait.3  25.3      34.9        0.557     3.04
-    ## 18 " Community.3" Trait.4   0.256     0.00418    0.839     2.38
-    ## 19 " Community.3" Trait.5   0.178     0.00117    0.657     3.18
-    ## 20 " Community.3" Trait.6 393.    28142.         0.584     1.74
+    ##           comID   Trait        mean     variance  skewness  kurtosis
+    ## 1   Community.1 Trait.1   0.3711024 3.777602e-02 0.9888400  2.877081
+    ## 2   Community.1 Trait.2   1.9321757 6.481174e+00 1.7552924  4.834204
+    ## 3   Community.1 Trait.3  25.2493390 7.361278e+01 1.7574914  5.510024
+    ## 4   Community.1 Trait.4   0.2664765 5.961480e-03 0.1005407  1.572190
+    ## 5   Community.1 Trait.5          NA           NA        NA        NA
+    ## 6   Community.1 Trait.6          NA           NA        NA        NA
+    ## 7   Community.1 Trait.7          NA           NA        NA        NA
+    ## 8   Community.2 Trait.1   0.3682858 2.282800e-02 0.9125217  2.823832
+    ## 9   Community.2 Trait.2   1.8883485 1.671073e+00 5.7676100 72.509588
+    ## 10  Community.2 Trait.3          NA           NA        NA        NA
+    ## 11  Community.2 Trait.4   0.2545458 5.552564e-03 0.7414051  1.973496
+    ## 12  Community.2 Trait.5 "rval"           NA        NA        NA
+    ## 13  Community.2 Trait.6          NA           NA        NA        NA
+    ## 14  Community.2 Trait.7          NA           NA        NA        NA
+    ## 15  Community.3 Trait.1   0.3632115 3.431932e-02 0.4123648  2.012045
+    ## 16  Community.3 Trait.2   1.3659117 2.175371e+00 4.7844620 41.138377
+    ## 17  Community.3 Trait.3  25.2750461 3.490098e+01 0.5569152  3.035759
+    ## 18  Community.3 Trait.4   0.2562308 4.178866e-03 0.8391029  2.384278
+    ## 19  Community.3 Trait.5   0.1781169 1.171748e-03 0.6570544  3.180085
+    ## 20  Community.3 Trait.6 393.2414434 2.814167e+04 0.5838220  1.743911
 
 ### Second: with settings to control the trade-off between reliable results and the number of NAs obtained
+
+The first attempt resulted in a data frame that contains several NAs.
+This is because ‘trait_moments’ with default settings returns an NA if
+the cumulative relative abundance of the species for which trait
+information is available is less than 80% or if there is missing
+information for at leased one of the four most dominant species. Many
+studies use a threshold value of 80% cumulative relative abundance for
+the calculation of community weighted means (Bello et al. 2021). For the
+calculation of trait distribution moments, Le Bagousse-Pinguet et
+al. (2017) introduced the additional threshold that, trait data should
+be available for the four most dominant species to avoid any breaks in
+the trait distributions. I strongly recommend applying these or even
+stricter criteria in order to obtain reliable results. However,
+‘trait_moments’ contains arguments to control the trade-off between
+reliable results and the number of NAs obtained. By setting the
+arguments ‘n_species = 1’ and ‘abundance = 50’ we get a result that
+contains less NAs.
 
 ``` r
 result <- trait_moments(communities, traits, n_species = 1, abundance = 50)
@@ -143,29 +189,31 @@ result <- trait_moments(communities, traits, n_species = 1, abundance = 50)
 result[1:20,1:ncol(result)]
 ```
 
-    ## # A tibble: 20 × 6
-    ##    comID          Trait      mean     variance skewness kurtosis
-    ##    <chr>          <chr>     <dbl>        <dbl>    <dbl>    <dbl>
-    ##  1 " Community.1" Trait.1   0.371     0.0378      0.989     2.88
-    ##  2 " Community.1" Trait.2   1.93      6.48        1.76      4.83
-    ##  3 " Community.1" Trait.3  25.2      73.6         1.76      5.51
-    ##  4 " Community.1" Trait.4   0.266     0.00596     0.101     1.57
-    ##  5 " Community.1" Trait.5   0.170     0.000771    2.39      7.52
-    ##  6 " Community.1" Trait.6 526.    43859.         -0.297     1.90
-    ##  7 " Community.1" Trait.7  46.9     288.          2.61     12.1 
-    ##  8 " Community.2" Trait.1   0.368     0.0228      0.913     2.82
-    ##  9 " Community.2" Trait.2   1.89      1.67        5.77     72.5 
-    ## 10 " Community.2" Trait.3  24.3      NA          NA        NA   
-    ## 11 " Community.2" Trait.4   0.255     0.00555     0.741     1.97
-    ## 12 " Community.2" Trait.5   0.171    NA          NA        NA   
-    ## 13 " Community.2" Trait.6 450.       NA          NA        NA   
-    ## 14 " Community.2" Trait.7  50.6      NA          NA        NA   
-    ## 15 " Community.3" Trait.1   0.363     0.0343      0.412     2.01
-    ## 16 " Community.3" Trait.2   1.37      2.18        4.78     41.1 
-    ## 17 " Community.3" Trait.3  25.3      34.9         0.557     3.04
-    ## 18 " Community.3" Trait.4   0.256     0.00418     0.839     2.38
-    ## 19 " Community.3" Trait.5   0.178     0.00117     0.657     3.18
-    ## 20 " Community.3" Trait.6 393.    28142.          0.584     1.74
+    ##           comID   Trait        mean     variance   skewness  kurtosis
+    ## 1   Community.1 Trait.1   0.3711024 3.777602e-02  0.9888400  2.877081
+    ## 2   Community.1 Trait.2   1.9321757 6.481174e+00  1.7552924  4.834204
+    ## 3   Community.1 Trait.3  25.2493390 7.361278e+01  1.7574914  5.510024
+    ## 4   Community.1 Trait.4   0.2664765 5.961480e-03  0.1005407  1.572190
+    ## 5   Community.1 Trait.5   0.1701620 7.709182e-04  2.3851261  7.520367
+    ## 6   Community.1 Trait.6 526.1602811 4.385872e+04 -0.2970703  1.895997
+    ## 7   Community.1 Trait.7  46.9184966 2.882941e+02  2.6094370 12.105355
+    ## 8   Community.2 Trait.1   0.3682858 2.282800e-02  0.9125217  2.823832
+    ## 9   Community.2 Trait.2   1.8883485 1.671073e+00  5.7676100 72.509588
+    ## 10  Community.2 Trait.3  24.2978765           NA         NA        NA
+    ## 11  Community.2 Trait.4   0.2545458 5.552564e-03  0.7414051  1.973496
+    ## 12  Community.2 Trait.5   0.1712572           NA         NA        NA
+    ## 13  Community.2 Trait.6 449.8063787           NA         NA        NA
+    ## 14  Community.2 Trait.7  50.5685556           NA         NA        NA
+    ## 15  Community.3 Trait.1   0.3632115 3.431932e-02  0.4123648  2.012045
+    ## 16  Community.3 Trait.2   1.3659117 2.175371e+00  4.7844620 41.138377
+    ## 17  Community.3 Trait.3  25.2750461 3.490098e+01  0.5569152  3.035759
+    ## 18  Community.3 Trait.4   0.2562308 4.178866e-03  0.8391029  2.384278
+    ## 19  Community.3 Trait.5   0.1781169 1.171748e-03  0.6570544  3.180085
+    ## 20  Community.3 Trait.6 393.2414434 2.814167e+04  0.5838220  1.743911
+
+Conversely, the two arguments can also be used to apply stricter quality
+criteria. This is particularly appropriate when trait information is
+available for a large number of species.
 
 ## Visualisation of trait distributions based on moments
 
@@ -173,54 +221,84 @@ A function for visualising trait distributions based on the moments is
 not yet available in ‘TraitMoments’, but I intend to implement it in
 later versions. Here I show how to visualise trait distributions for
 single communities using the package ‘PearsonDS’. Lets plot the
-distributions of Trait 1 in Community 1, 9 and 10:
+distributions of Trait 1 for Community 1, 5 and 9:
+
+Firstly, select the results for the tree distributions:
+
+``` r
+selected_results <- rbind(
+  result[1, 1:ncol(result)],
+  result[29, 1:ncol(result)],
+  result[57, 1:ncol(result)]
+  )
+```
+
+Second, density estimation via ‘rpearson’ and ‘density’:
 
 ``` r
 library(PearsonDS)
+set.seed(123)
+pearson_generation  <- rpearson(10000000,moments=c(mean = selected_results[1,3], variance = selected_results[1,4], skewness = selected_results[1,5], kurtosis = selected_results[1,6]))
+dens_Community.1_Trait.1 <- density(pearson_generation)
 
-selected_results <- rbind(
-  result[1, 1:ncol(result)],
-  result[57, 1:ncol(result)],
-  result[64, 1:ncol(result)])
+pearson_generation  <- rpearson(10000000,moments=c(mean = selected_results[2,3], variance = selected_results[2,4], skewness = selected_results[2,5], kurtosis = selected_results[2,6]))
+dens_Community.5_Trait.1 <- density(pearson_generation)
 
+pearson_generation  <- rpearson(10000000,moments=c(mean = selected_results[3,3], variance = selected_results[3,4], skewness = selected_results[3,5], kurtosis = selected_results[3,6]))
+dens_Community.9_Trait.1 <- density(pearson_generation)
+```
+
+Third, plot the density estimation:
+
+``` r
+par(mfrow = c(3, 1))
+plot(dens_Community.1_Trait.1$x,length(dens_Community.1_Trait.1$x)*dens_Community.1_Trait.1$y,type="l",xlab="Value",ylab="Frequency", yaxt='n', main = "Community 1 Trait 1", xlim = c(0,1))
+plot(dens_Community.5_Trait.1$x,length(dens_Community.5_Trait.1$x)*dens_Community.5_Trait.1$y,type="l",xlab="Value",ylab="Frequency", yaxt='n', main = "Community 5 Trait 1", xlim = c(0,1))
+plot(dens_Community.9_Trait.1$x,length(dens_Community.9_Trait.1$x)*dens_Community.9_Trait.1$y,type="l",xlab="Value",ylab="Frequency", yaxt='n', main = "Community 9 Trait 1", xlim = c(0,1))
+```
+
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+And inspect the corresponding moments:
+
+``` r
 selected_results
 ```
 
-    ## # A tibble: 3 × 6
-    ##   comID           Trait    mean variance skewness kurtosis
-    ##   <chr>           <chr>   <dbl>    <dbl>    <dbl>    <dbl>
-    ## 1 " Community.1"  Trait.1 0.371   0.0378   0.989      2.88
-    ## 2 " Community.9"  Trait.1 0.429   0.0483  -0.0286     1.86
-    ## 3 " Community.10" Trait.1 0.442   0.0355  -0.448      1.65
+    ##           comID   Trait      mean   variance    skewness kurtosis
+    ## 1   Community.1 Trait.1 0.3711024 0.03777602  0.98884001 2.877081
+    ## 29  Community.5 Trait.1 0.5123229 0.02076393 -0.52748866 3.462511
+    ## 57  Community.9 Trait.1 0.4290053 0.04829166 -0.02859744 1.858578
 
-``` r
-Community.1_Trait.1 <- result[1, 1:ncol(result)]
-Community.9_Trait.1 <- result[57, 1:ncol(result)]
-Community.10_Trait.1 <- result[64, 1:ncol(result)]
+The estimated distributions of trait 1 for the three communities look
+quite different. If we had only calculated the mean values, as is the
+case in many studies, some of these differences would have remained
+hidden. As mean and variance are regularly considered in functional
+ecology studies, I will emphasise how the distributions differ in terms
+of skewness and kurtosis. Skewness is a measure of the asymmetry of a
+distribution. Community 1 is strongly skewed to the right (positive
+skew), while community 5 is slightly skewed to the left (negative skew)
+and community 9 is almost symmetric (skew close to zero). Furthermore
+the three distributions differ with regard to the fourth moment, the
+kurtosis which is a characterization of a distributions “tailedness” or
+“peakedness”. Community 1 is quite peaked around a value of
+approximately 0.2, but also has a tail that extends far to the right.
+Although the distribution for community 5 looks less peaked at first
+glance, it has the highest kurtosis, as its tails are less pronounced
+than those of community 1. The distribution for community 9 has the
+least marked peak and short tails, i.e. a low kurtosis, which in the
+sense of Le Bagousse-Pinguet et al. (2021) would be indicative for a
+high functional evenness.
 
-set.seed(123)
-pearson_generation  <- rpearson(10000000,moments=c(mean = Community.1_Trait.1[3], variance = Community.1_Trait.1[4], skewness = Community.1_Trait.1[5], kurtosis = Community.1_Trait.1[6]))
-dens_Community.1_Trait.1 <- density(pearson_generation)
+## Final note on community weighted means (CWMs)
 
-pearson_generation  <- rpearson(10000000,moments=c(mean = Community.9_Trait.1[3], variance = Community.9_Trait.1[4], skewness = Community.9_Trait.1[5], kurtosis = Community.9_Trait.1[6]))
-dens_Community.9_Trait.1 <- density(pearson_generation)
+The function ‘functcomp’ from the package ‘FD’ is frequently used to
+calculate CWMs. In the following I will demonstrate that ‘functcomp’ and
+‘trait_moments’ return exactly the same values, however ‘trait_moments’
+enables to specify a threshold for the cumulative relative abundance for
+which trait information should be present.
 
-pearson_generation  <- rpearson(10000000,moments=c(mean = Community.10_Trait.1[3], variance = Community.10_Trait.1[4], skewness = Community.10_Trait.1[5], kurtosis = Community.10_Trait.1[6]))
-dens_Community.10_Trait.1 <- density(pearson_generation)
-
-par(mfrow = c(3, 1))
-plot(dens_Community.1_Trait.1$x,length(dens_Community.1_Trait.1$x)*dens_Community.1_Trait.1$y,type="l",xlab="Value",ylab="Frequency", yaxt='n', main = "Community 1 Trait 1", xlim = c(0,1))
-plot(dens_Community.9_Trait.1$x,length(dens_Community.9_Trait.1$x)*dens_Community.9_Trait.1$y,type="l",xlab="Value",ylab="Frequency", yaxt='n', main = "Community 9 Trait 1", xlim = c(0,1))
-plot(dens_Community.10_Trait.1$x,length(dens_Community.10_Trait.1$x)*dens_Community.10_Trait.1$y,type="l",xlab="Value",ylab="Frequency", yaxt='n', main = "Community 10 Trait 1", xlim = c(0,1))
-```
-
-![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
-
-## Final note on CWMs
-
-The function ‘functcomp’ from the package ‘FD’ is often used to
-calculate community weighted means (CWMs). Here this function is applied
-to our data:
+First we inspect the output of ‘functcomp’:
 
 ``` r
 library(FD)
@@ -270,13 +348,10 @@ functcomp(traits, as.matrix(communities))
     ##  Community.19 78.73701
     ##  Community.20 82.00967
 
-However, ‘functcomp’ does not contain any options to define a cumulative
-relative abundance for which trait information should be present, in
-order to obtain reliable results. In many cases it is advisable to set a
-threshold value of 80 % for the cumulative relative abundance.
-
-Now a calculation is performed with ‘trait_moments’, we set n_species =
-0 and abundance = 80:
+As already stated above, in many cases it is advisable to set a
+threshold value of 80 % for the cumulative relative abundance. This can
+be achieved via ‘trait_moments’ if we set ‘n_species = 0’ and ‘abundance
+= 80’:
 
 ``` r
 result <- trait_moments(communities, traits, n_species = 0, abundance = 80)
@@ -292,35 +367,35 @@ result <- trait_moments(communities, traits, n_species = 0, abundance = 80)
 result[1:20,1:ncol(result)]
 ```
 
-    ## # A tibble: 20 × 6
-    ##    comID          Trait      mean variance skewness kurtosis
-    ##    <chr>          <chr>     <dbl>    <dbl>    <dbl>    <dbl>
-    ##  1 " Community.1" Trait.1   0.371       NA       NA       NA
-    ##  2 " Community.1" Trait.2   1.93        NA       NA       NA
-    ##  3 " Community.1" Trait.3  25.2         NA       NA       NA
-    ##  4 " Community.1" Trait.4   0.266       NA       NA       NA
-    ##  5 " Community.1" Trait.5  NA           NA       NA       NA
-    ##  6 " Community.1" Trait.6  NA           NA       NA       NA
-    ##  7 " Community.1" Trait.7  NA           NA       NA       NA
-    ##  8 " Community.2" Trait.1   0.368       NA       NA       NA
-    ##  9 " Community.2" Trait.2   1.89        NA       NA       NA
-    ## 10 " Community.2" Trait.3  NA           NA       NA       NA
-    ## 11 " Community.2" Trait.4   0.255       NA       NA       NA
-    ## 12 " Community.2" Trait.5  NA           NA       NA       NA
-    ## 13 " Community.2" Trait.6  NA           NA       NA       NA
-    ## 14 " Community.2" Trait.7  NA           NA       NA       NA
-    ## 15 " Community.3" Trait.1   0.363       NA       NA       NA
-    ## 16 " Community.3" Trait.2   1.37        NA       NA       NA
-    ## 17 " Community.3" Trait.3  25.3         NA       NA       NA
-    ## 18 " Community.3" Trait.4   0.256       NA       NA       NA
-    ## 19 " Community.3" Trait.5   0.178       NA       NA       NA
-    ## 20 " Community.3" Trait.6 393.          NA       NA       NA
+    ##           comID   Trait        mean variance skewness kurtosis
+    ## 1   Community.1 Trait.1   0.3711024       NA       NA       NA
+    ## 2   Community.1 Trait.2   1.9321757       NA       NA       NA
+    ## 3   Community.1 Trait.3  25.2493390       NA       NA       NA
+    ## 4   Community.1 Trait.4   0.2664765       NA       NA       NA
+    ## 5   Community.1 Trait.5          NA       NA       NA       NA
+    ## 6   Community.1 Trait.6          NA       NA       NA       NA
+    ## 7   Community.1 Trait.7          NA       NA       NA       NA
+    ## 8   Community.2 Trait.1   0.3682858       NA       NA       NA
+    ## 9   Community.2 Trait.2   1.8883485       NA       NA       NA
+    ## 10  Community.2 Trait.3          NA       NA       NA       NA
+    ## 11  Community.2 Trait.4   0.2545458       NA       NA       NA
+    ## 12  Community.2 Trait.5          NA       NA       NA       NA
+    ## 13  Community.2 Trait.6          NA       NA       NA       NA
+    ## 14  Community.2 Trait.7          NA       NA       NA       NA
+    ## 15  Community.3 Trait.1   0.3632115       NA       NA       NA
+    ## 16  Community.3 Trait.2   1.3659117       NA       NA       NA
+    ## 17  Community.3 Trait.3  25.2750461       NA       NA       NA
+    ## 18  Community.3 Trait.4   0.2562308       NA       NA       NA
+    ## 19  Community.3 Trait.5   0.1781169       NA       NA       NA
+    ## 20  Community.3 Trait.6 393.2414434       NA       NA       NA
 
-We get a warning that for n_species = 0 only CWMs but no moments can be
-calculated. Since this is our goal in this case we can ignore this
-warning. ‘Trait_moments’ generates exactly the same CWMs as ‘functcomp’,
-but if there is not enough trait information available to obtain
-reliable results (level can be chosen by the user), an NA is returned.
+We receive a warning that CWMs but no moments can be calculated if we
+set ‘n_species = 0’. Since this is our goal in this special case we can
+ignore this warning. ‘Trait_moments’ generates exactly the same CWMs as
+‘functcomp’, but if there is not suficient trait information to obtain
+reliable results (level can be chosen by the user), it returns NAs. If
+we set ‘n_species = 0’ and ‘abundance = 0’, the two functions return
+exactly the same result.
 
 # Citation
 
