@@ -20,6 +20,8 @@ Mean (CWM), variance, skewness and kurtosis of all trait distributions for each 
 }
 \description{
 trait_moments calculates all moments (mean, variance, skewness and kurtosis) of trait distribution across large community and traits datasets. The calculation is performed according to the equations number 1 to 4 from Le Bagousse-Pinguet et al. (2017).
+See detailed information on the calculation in the github documentation:
+\href{https://github.com/SchreinerFR/TraitMoments}{SchreinerFR/TraitMoments}
 }
 \examples{
 result <- trait_moments(example_communitys, example_traits, n_species = 5, abundance = 80)
