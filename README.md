@@ -19,7 +19,7 @@ filtering concept (Enquist et al. 2015).
 
 ## Installation
 
-Install the latest version from [GitHub](https://github.com/) with:
+Install the latest version from GitHub with:
 
 ``` r
 # install.packages("devtools")
@@ -28,7 +28,8 @@ devtools::install_github("SchreinerFR/TraitMoments")
 
 ## View documentation
 
-Load package and see the help for the function ‘trait_moments’:
+Load the package and call the documentation for the function
+‘trait_moments’:
 
 ``` r
 library(TraitMoments)
@@ -162,6 +163,53 @@ result[1:20,1:ncol(result)]
     ## 19  Community.3 Trait.5   0.1781169 1.171748e-03  0.6570544  3.180085
     ## 20  Community.3 Trait.6 393.2414434 2.814167e+04  0.5838220  1.743911
 
+## Visualisation of trait distributions based on moments
+
+A function for visualising trait distributions based on the moments is
+not yet available in ‘TraitMoments’, but I intend to implement it in
+later versions. Here I show how to visualise trait distributions for
+single communities using the package ‘PearsonDS’. Lets plot the
+distributions of Trait 1 in Community 1, 9 and 10:
+
+``` r
+library(PearsonDS)
+
+selected_results <- rbind(
+  result[1, 1:ncol(result)],
+  result[57, 1:ncol(result)],
+  result[64, 1:ncol(result)])
+
+selected_results
+```
+
+    ##            comID   Trait      mean   variance    skewness kurtosis
+    ## 1    Community.1 Trait.1 0.3711024 0.03777602  0.98884001 2.877081
+    ## 57   Community.9 Trait.1 0.4290053 0.04829166 -0.02859744 1.858578
+    ## 64  Community.10 Trait.1 0.4418142 0.03547876 -0.44825575 1.647506
+
+``` r
+Community.1_Trait.1 <- result[1, 1:ncol(result)]
+Community.9_Trait.1 <- result[57, 1:ncol(result)]
+Community.10_Trait.1 <- result[64, 1:ncol(result)]
+
+set.seed(123)
+pearson_generation  <- rpearson(10000000,moments=c(mean = Community.1_Trait.1[3], variance = Community.1_Trait.1[4], skewness = Community.1_Trait.1[5], kurtosis = Community.1_Trait.1[6]))
+dens_Community.1_Trait.1 <- density(pearson_generation)
+
+pearson_generation  <- rpearson(10000000,moments=c(mean = Community.9_Trait.1[3], variance = Community.9_Trait.1[4], skewness = Community.9_Trait.1[5], kurtosis = Community.9_Trait.1[6]))
+dens_Community.9_Trait.1 <- density(pearson_generation)
+
+pearson_generation  <- rpearson(10000000,moments=c(mean = Community.10_Trait.1[3], variance = Community.10_Trait.1[4], skewness = Community.10_Trait.1[5], kurtosis = Community.10_Trait.1[6]))
+dens_Community.10_Trait.1 <- density(pearson_generation)
+
+par(mfrow = c(3, 1))
+plot(dens_Community.1_Trait.1$x,length(dens_Community.1_Trait.1$x)*dens_Community.1_Trait.1$y,type="l",xlab="Value",ylab="Frequency", yaxt='n', main = "Community 1 Trait 1", xlim = c(0,1))
+plot(dens_Community.9_Trait.1$x,length(dens_Community.9_Trait.1$x)*dens_Community.9_Trait.1$y,type="l",xlab="Value",ylab="Frequency", yaxt='n', main = "Community 9 Trait 1", xlim = c(0,1))
+plot(dens_Community.10_Trait.1$x,length(dens_Community.10_Trait.1$x)*dens_Community.10_Trait.1$y,type="l",xlab="Value",ylab="Frequency", yaxt='n', main = "Community 10 Trait 1", xlim = c(0,1))
+```
+
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
 ## Final note on CWMs
 
 The function ‘functcomp’ from the package ‘FD’ is often used to
@@ -265,6 +313,14 @@ calculated. Since this is our goal in this case we can ignore this
 warning. ‘Trait_moments’ generates exactly the same CWMs as ‘functcomp’,
 but if there is not enough trait information available to obtain
 reliable results (level can be chosen by the user), an NA is returned.
+
+# Citation
+
+Please cite as:
+
+> Falk-Rudhard Schreiner (2024). TraitMoments: Efficient calculation of
+> trait distribution moments. Online at
+> <https://github.com/SchreinerFR/TraitMoments>.
 
 # References
 
