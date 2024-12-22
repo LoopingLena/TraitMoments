@@ -106,27 +106,29 @@ dim(result)
 result[1:20,1:ncol(result)]
 ```
 
-    ##           comID   Trait        mean     variance  skewness  kurtosis
-    ## 1   Community.1 Trait.1   0.3711024 3.777602e-02 0.9888400  2.877081
-    ## 2   Community.1 Trait.2   1.9321757 6.481174e+00 1.7552924  4.834204
-    ## 3   Community.1 Trait.3  25.2493390 7.361278e+01 1.7574914  5.510024
-    ## 4   Community.1 Trait.4   0.2664765 5.961480e-03 0.1005407  1.572190
-    ## 5   Community.1 Trait.5          NA           NA        NA        NA
-    ## 6   Community.1 Trait.6          NA           NA        NA        NA
-    ## 7   Community.1 Trait.7          NA           NA        NA        NA
-    ## 8   Community.2 Trait.1   0.3682858 2.282800e-02 0.9125217  2.823832
-    ## 9   Community.2 Trait.2   1.8883485 1.671073e+00 5.7676100 72.509588
-    ## 10  Community.2 Trait.3          NA           NA        NA        NA
-    ## 11  Community.2 Trait.4   0.2545458 5.552564e-03 0.7414051  1.973496
-    ## 12  Community.2 Trait.5          NA           NA        NA        NA
-    ## 13  Community.2 Trait.6          NA           NA        NA        NA
-    ## 14  Community.2 Trait.7          NA           NA        NA        NA
-    ## 15  Community.3 Trait.1   0.3632115 3.431932e-02 0.4123648  2.012045
-    ## 16  Community.3 Trait.2   1.3659117 2.175371e+00 4.7844620 41.138377
-    ## 17  Community.3 Trait.3  25.2750461 3.490098e+01 0.5569152  3.035759
-    ## 18  Community.3 Trait.4   0.2562308 4.178866e-03 0.8391029  2.384278
-    ## 19  Community.3 Trait.5   0.1781169 1.171748e-03 0.6570544  3.180085
-    ## 20  Community.3 Trait.6 393.2414434 2.814167e+04 0.5838220  1.743911
+    ## # A tibble: 20 × 6
+    ##    comID          Trait      mean    variance skewness kurtosis
+    ##    <chr>          <chr>     <dbl>       <dbl>    <dbl>    <dbl>
+    ##  1 " Community.1" Trait.1   0.371     0.0378     0.989     2.88
+    ##  2 " Community.1" Trait.2   1.93      6.48       1.76      4.83
+    ##  3 " Community.1" Trait.3  25.2      73.6        1.76      5.51
+    ##  4 " Community.1" Trait.4   0.266     0.00596    0.101     1.57
+    ##  5 " Community.1" Trait.5  NA        NA         NA        NA   
+    ##  6 " Community.1" Trait.6  NA        NA         NA        NA   
+    ##  7 " Community.1" Trait.7  NA        NA         NA        NA   
+    ##  8 " Community.2" Trait.1   0.368     0.0228     0.913     2.82
+    ##  9 " Community.2" Trait.2   1.89      1.67       5.77     72.5 
+    ## 10 " Community.2" Trait.3  NA        NA         NA        NA   
+    ## 11 " Community.2" Trait.4   0.255     0.00555    0.741     1.97
+    ## 12 " Community.2" Trait.5  NA        NA         NA        NA   
+    ## 13 " Community.2" Trait.6  NA        NA         NA        NA   
+    ## 14 " Community.2" Trait.7  NA        NA         NA        NA   
+    ## 15 " Community.3" Trait.1   0.363     0.0343     0.412     2.01
+    ## 16 " Community.3" Trait.2   1.37      2.18       4.78     41.1 
+    ## 17 " Community.3" Trait.3  25.3      34.9        0.557     3.04
+    ## 18 " Community.3" Trait.4   0.256     0.00418    0.839     2.38
+    ## 19 " Community.3" Trait.5   0.178     0.00117    0.657     3.18
+    ## 20 " Community.3" Trait.6 393.    28142.         0.584     1.74
 
 ### Second: with settings to control the trade-off between reliable results and the number of NAs obtained
 
@@ -135,33 +137,35 @@ result <- trait_moments(communities, traits, n_species = 1, abundance = 50)
 ```
 
     ## Warning in trait_moments(communities, traits, n_species = 1, abundance = 50):
-    ## Calculations with n_species < 4 should be interpreted with caution.
+    ## Calculations with n_species < 4 may lead to unreliable results.
 
 ``` r
 result[1:20,1:ncol(result)]
 ```
 
-    ##           comID   Trait        mean     variance   skewness  kurtosis
-    ## 1   Community.1 Trait.1   0.3711024 3.777602e-02  0.9888400  2.877081
-    ## 2   Community.1 Trait.2   1.9321757 6.481174e+00  1.7552924  4.834204
-    ## 3   Community.1 Trait.3  25.2493390 7.361278e+01  1.7574914  5.510024
-    ## 4   Community.1 Trait.4   0.2664765 5.961480e-03  0.1005407  1.572190
-    ## 5   Community.1 Trait.5   0.1701620 7.709182e-04  2.3851261  7.520367
-    ## 6   Community.1 Trait.6 526.1602811 4.385872e+04 -0.2970703  1.895997
-    ## 7   Community.1 Trait.7  46.9184966 2.882941e+02  2.6094370 12.105355
-    ## 8   Community.2 Trait.1   0.3682858 2.282800e-02  0.9125217  2.823832
-    ## 9   Community.2 Trait.2   1.8883485 1.671073e+00  5.7676100 72.509588
-    ## 10  Community.2 Trait.3  24.2978765           NA         NA        NA
-    ## 11  Community.2 Trait.4   0.2545458 5.552564e-03  0.7414051  1.973496
-    ## 12  Community.2 Trait.5   0.1712572           NA         NA        NA
-    ## 13  Community.2 Trait.6 449.8063787           NA         NA        NA
-    ## 14  Community.2 Trait.7  50.5685556           NA         NA        NA
-    ## 15  Community.3 Trait.1   0.3632115 3.431932e-02  0.4123648  2.012045
-    ## 16  Community.3 Trait.2   1.3659117 2.175371e+00  4.7844620 41.138377
-    ## 17  Community.3 Trait.3  25.2750461 3.490098e+01  0.5569152  3.035759
-    ## 18  Community.3 Trait.4   0.2562308 4.178866e-03  0.8391029  2.384278
-    ## 19  Community.3 Trait.5   0.1781169 1.171748e-03  0.6570544  3.180085
-    ## 20  Community.3 Trait.6 393.2414434 2.814167e+04  0.5838220  1.743911
+    ## # A tibble: 20 × 6
+    ##    comID          Trait      mean     variance skewness kurtosis
+    ##    <chr>          <chr>     <dbl>        <dbl>    <dbl>    <dbl>
+    ##  1 " Community.1" Trait.1   0.371     0.0378      0.989     2.88
+    ##  2 " Community.1" Trait.2   1.93      6.48        1.76      4.83
+    ##  3 " Community.1" Trait.3  25.2      73.6         1.76      5.51
+    ##  4 " Community.1" Trait.4   0.266     0.00596     0.101     1.57
+    ##  5 " Community.1" Trait.5   0.170     0.000771    2.39      7.52
+    ##  6 " Community.1" Trait.6 526.    43859.         -0.297     1.90
+    ##  7 " Community.1" Trait.7  46.9     288.          2.61     12.1 
+    ##  8 " Community.2" Trait.1   0.368     0.0228      0.913     2.82
+    ##  9 " Community.2" Trait.2   1.89      1.67        5.77     72.5 
+    ## 10 " Community.2" Trait.3  24.3      NA          NA        NA   
+    ## 11 " Community.2" Trait.4   0.255     0.00555     0.741     1.97
+    ## 12 " Community.2" Trait.5   0.171    NA          NA        NA   
+    ## 13 " Community.2" Trait.6 450.       NA          NA        NA   
+    ## 14 " Community.2" Trait.7  50.6      NA          NA        NA   
+    ## 15 " Community.3" Trait.1   0.363     0.0343      0.412     2.01
+    ## 16 " Community.3" Trait.2   1.37      2.18        4.78     41.1 
+    ## 17 " Community.3" Trait.3  25.3      34.9         0.557     3.04
+    ## 18 " Community.3" Trait.4   0.256     0.00418     0.839     2.38
+    ## 19 " Community.3" Trait.5   0.178     0.00117     0.657     3.18
+    ## 20 " Community.3" Trait.6 393.    28142.          0.584     1.74
 
 ## Visualisation of trait distributions based on moments
 
@@ -182,10 +186,12 @@ selected_results <- rbind(
 selected_results
 ```
 
-    ##            comID   Trait      mean   variance    skewness kurtosis
-    ## 1    Community.1 Trait.1 0.3711024 0.03777602  0.98884001 2.877081
-    ## 57   Community.9 Trait.1 0.4290053 0.04829166 -0.02859744 1.858578
-    ## 64  Community.10 Trait.1 0.4418142 0.03547876 -0.44825575 1.647506
+    ## # A tibble: 3 × 6
+    ##   comID           Trait    mean variance skewness kurtosis
+    ##   <chr>           <chr>   <dbl>    <dbl>    <dbl>    <dbl>
+    ## 1 " Community.1"  Trait.1 0.371   0.0378   0.989      2.88
+    ## 2 " Community.9"  Trait.1 0.429   0.0483  -0.0286     1.86
+    ## 3 " Community.10" Trait.1 0.442   0.0355  -0.448      1.65
 
 ``` r
 Community.1_Trait.1 <- result[1, 1:ncol(result)]
@@ -280,33 +286,35 @@ result <- trait_moments(communities, traits, n_species = 0, abundance = 80)
     ## If n_species = 0 no moments but only cwms can be calculated.
 
     ## Warning in trait_moments(communities, traits, n_species = 0, abundance = 80):
-    ## Calculations with n_species < 4 should be interpreted with caution.
+    ## Calculations with n_species < 4 may lead to unreliable results.
 
 ``` r
 result[1:20,1:ncol(result)]
 ```
 
-    ##           comID   Trait        mean variance skewness kurtosis
-    ## 1   Community.1 Trait.1   0.3711024       NA       NA       NA
-    ## 2   Community.1 Trait.2   1.9321757       NA       NA       NA
-    ## 3   Community.1 Trait.3  25.2493390       NA       NA       NA
-    ## 4   Community.1 Trait.4   0.2664765       NA       NA       NA
-    ## 5   Community.1 Trait.5          NA       NA       NA       NA
-    ## 6   Community.1 Trait.6          NA       NA       NA       NA
-    ## 7   Community.1 Trait.7          NA       NA       NA       NA
-    ## 8   Community.2 Trait.1   0.3682858       NA       NA       NA
-    ## 9   Community.2 Trait.2   1.8883485       NA       NA       NA
-    ## 10  Community.2 Trait.3          NA       NA       NA       NA
-    ## 11  Community.2 Trait.4   0.2545458       NA       NA       NA
-    ## 12  Community.2 Trait.5          NA       NA       NA       NA
-    ## 13  Community.2 Trait.6          NA       NA       NA       NA
-    ## 14  Community.2 Trait.7          NA       NA       NA       NA
-    ## 15  Community.3 Trait.1   0.3632115       NA       NA       NA
-    ## 16  Community.3 Trait.2   1.3659117       NA       NA       NA
-    ## 17  Community.3 Trait.3  25.2750461       NA       NA       NA
-    ## 18  Community.3 Trait.4   0.2562308       NA       NA       NA
-    ## 19  Community.3 Trait.5   0.1781169       NA       NA       NA
-    ## 20  Community.3 Trait.6 393.2414434       NA       NA       NA
+    ## # A tibble: 20 × 6
+    ##    comID          Trait      mean variance skewness kurtosis
+    ##    <chr>          <chr>     <dbl>    <dbl>    <dbl>    <dbl>
+    ##  1 " Community.1" Trait.1   0.371       NA       NA       NA
+    ##  2 " Community.1" Trait.2   1.93        NA       NA       NA
+    ##  3 " Community.1" Trait.3  25.2         NA       NA       NA
+    ##  4 " Community.1" Trait.4   0.266       NA       NA       NA
+    ##  5 " Community.1" Trait.5  NA           NA       NA       NA
+    ##  6 " Community.1" Trait.6  NA           NA       NA       NA
+    ##  7 " Community.1" Trait.7  NA           NA       NA       NA
+    ##  8 " Community.2" Trait.1   0.368       NA       NA       NA
+    ##  9 " Community.2" Trait.2   1.89        NA       NA       NA
+    ## 10 " Community.2" Trait.3  NA           NA       NA       NA
+    ## 11 " Community.2" Trait.4   0.255       NA       NA       NA
+    ## 12 " Community.2" Trait.5  NA           NA       NA       NA
+    ## 13 " Community.2" Trait.6  NA           NA       NA       NA
+    ## 14 " Community.2" Trait.7  NA           NA       NA       NA
+    ## 15 " Community.3" Trait.1   0.363       NA       NA       NA
+    ## 16 " Community.3" Trait.2   1.37        NA       NA       NA
+    ## 17 " Community.3" Trait.3  25.3         NA       NA       NA
+    ## 18 " Community.3" Trait.4   0.256       NA       NA       NA
+    ## 19 " Community.3" Trait.5   0.178       NA       NA       NA
+    ## 20 " Community.3" Trait.6 393.          NA       NA       NA
 
 We get a warning that for n_species = 0 only CWMs but no moments can be
 calculated. Since this is our goal in this case we can ignore this

@@ -96,6 +96,8 @@ trait_moments <- function(communities, traits, n_species = 4, abundance = 80) {
   community_traits1 <- full_join(com_trait, community_traits1, by=c("comID","Trait"))
   community_traits <- full_join(community_traits1, community_traits2, by=c("comID","Trait"))
 
+  community_traits <- as.data.frame(community_traits)
+
   return(community_traits)
 }
 
