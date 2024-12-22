@@ -2,5 +2,6 @@
 
 export(trait_moments)
 import(dplyr)
-importFrom(magrittr)
-importFrom(tidyr)
+importFrom(magrittr,"%>%")
+importFrom(tidyr,gather)
+importFrom(tidyr,pivot_longer)

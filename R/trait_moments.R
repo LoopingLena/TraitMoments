@@ -27,12 +27,12 @@ trait_moments <- function(communities, traits, n_species = 4, abundance = 80) {
   communities <- communities * (100/cover_com)
   communities$comID <- row.names(communities)
   #communities <- tidyr::gather(communities, "Species", "Cover", -comID)
-  communities <- communities %>% tidyr::pivot_longer(!comID, names_to = "Species", values_to = "Cover")
+  communities <- communities %>% pivot_longer(!comID, names_to = "Species", values_to = "Cover")
 
   # Gather traits to long format
   traits$Species <- row.names(traits)
   #traits <- tidyr::gather(traits, "Trait", "Value", -Species)
-  traits <- traits %>% tidyr::pivot_longer(!Species, names_to = "Trait", values_to = "Value")
+  traits <- traits %>% pivot_longer(!Species, names_to = "Trait", values_to = "Value")
 
   # Full join of communities and traits
   community_traits <- full_join(communities, traits, by = "Species", relationship = "many-to-many")

@@ -7,20 +7,23 @@
 trait_moments(communities, traits, n_species = 4, abundance = 80)
 }
 \arguments{
-\item{communities}{The species-plot-matrix as data frame. Column names must be species IDs and row names community IDs.}
+\item{communities}{The species-plot-matrix as data frame. Column names must be species IDs and row names community IDs. It is not mandatory to provide relative abundances, but abundances should be on a nominal scale.}
 
-\item{traits}{The species-trait-matrix as data frame. Column names must be trait IDs and row names species IDs. The species IDs must be consistent with those from the species-plot-matrix.}
+\item{traits}{The species-trait-matrix as data frame. Column names must be trait IDs and row names species IDs. The species IDs must be consistent with those from the species-plot-matrix. Trait values have to be numeric.}
 
 \item{n_species}{Number of predominant species for which trait information must be present. If the criterion is not met, NA is returned for the trait-plot-combination. Default is 4.}
 
 \item{abundance}{Cumulative relative abundance for which trait information must be present. If the criterion is not met, NA is returned for the trait-plot-combination. Default is 80\%.}
 }
 \value{
-Community weighted means and all higher moments (variance, skewness and kurtosis) of trait distributions.
+Mean (CWM), variance, skewness and kurtosis of all trait distributions for each trait and each community.
 }
 \description{
-trait_moments returns the community weighted means and all higher moments (variance, skewness and kurtosis) of trait distributions calculated from a species-plot-matrix and a species-trait-matrix.
+trait_moments calculates all moments (mean, variance, skewness and kurtosis) of trait distribution across large community and traits datasets. The calculation is performed according to the equations number 1 to 4 from Le Bagousse-Pinguet et al. (2017).
 }
 \examples{
 result <- trait_moments(example_communitys, example_traits, n_species = 5, abundance = 80)
+}
+\references{
+Le Bagousse-Pinguet, Y., Gross, N., Maestre, F.T., Maire, V., Bello, F. de & Fonseca, C.R. et al. (2017) Testing the environmental filtering concept in global drylands. Journal of Ecology, 105(4), 1058–1069. Available from: https://doi.org/10.1111/1365-2745.12735.
 }
