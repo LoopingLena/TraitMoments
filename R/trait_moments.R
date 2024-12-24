@@ -2,8 +2,8 @@
 #' trait_moments
 #'
 #' trait_moments calculates all moments (mean, variance, skewness and kurtosis) of trait distribution across large community and traits datasets. The calculation is performed according to the equations number 1 to 4 from Le Bagousse-Pinguet et al. (2017).
-#' See detailed information on the calculation in the github documentation:
-#' [SchreinerFR/TraitMoments](https://github.com/SchreinerFR/TraitMoments)
+#' See detailed information on the calculation in the github documentation
+#' [TraitMoments](https://github.com/SchreinerFR/TraitMoments).
 #'
 #' @param communities The species-plot-matrix as data frame. Column names must be species IDs and row names community IDs. It is not mandatory to provide relative abundances, but abundances should be on a nominal scale.
 #' @param traits The species-trait-matrix as data frame. Column names must be trait IDs and row names species IDs. The species IDs must be consistent with those from the species-plot-matrix. Trait values have to be numeric.

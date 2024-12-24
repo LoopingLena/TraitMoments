@@ -9,11 +9,11 @@ Efficient calculation of trait distribution moments.
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-TraitMoments provides an efficient function to calculate all moments
-(mean, variance, skewness and kurtosis) of trait distribution across
-large community and traits datasets. The calculation is performed
-according to the equations number 1 to 4 from Le Bagousse-Pinguet et
-al. (2017):
+TraitMoments provides an efficient function to calculate mean, variance,
+skewness and kurtosis (all weighted by species relative abundance) of
+trait distribution across large community and traits datasets. The
+calculation is performed according to the equations number 1 to 4 from
+Le Bagousse-Pinguet et al. (2017):
 
 $$
 \small
@@ -42,24 +42,26 @@ $$
 where $p_i$ is the relative abundance and $T_i$ the trait value of the
 species *i*, *n* is the number of species in a community *j* with
 available trait information and the sum of relative abundance is equal
-to 100% for each community.
+to 100% for each community. Formulas 3 and 4 refer back to several works
+by Karl Pearson from the late 19th and early 20th century, which had a
+decisive influence on on the current understanding of skewness and
+kurtosis (see e.g. Fiori & Zenga 2009 or Doane & Seward 2011).
 
-The calculation of all moments provides detailed insights into the
-precise shape of trait distributions and allows the derived parameters
-to be linked to established frameworks of functional diversity (Bello et
-al. 2021, Bagousse-Pinguet et al. 2021) and the filtering concept
-(Enquist et al. 2015).
+The calculation of all moments enables detailed insights into the shape
+of trait distributions. Moments can be linked to established frameworks
+of functional diversity (Bagousse-Pinguet et al. 2021) and the filtering
+concept (Enquist et al. 2015).
 
 ## Installation
 
 Install the latest version from GitHub:
 
 ``` r
-# install.packages("devtools")
+# install.packages("devtools") # Run if not yet installed
 devtools::install_github("SchreinerFR/TraitMoments")
 ```
 
-## View documentation
+## Load package and view documentation
 
 Load the package and call the documentation for the function
 ‘trait_moments’:
@@ -69,7 +71,7 @@ library(TraitMoments)
 ?trait_moments
 ```
 
-## Example data
+## Explore example data
 
 TraitMoments provides two example data frames. The data frame
 ‘communities’ contains the abundances for 93 species from 20 communities
@@ -117,7 +119,7 @@ traits[1:6,1:ncol(traits)]
     ## Species.5 0.4503360 3.43468944  9.43788 0.1614551        NA       NA       NA
     ## Species.6 0.6234141 1.08995680 27.80066 0.3848673 0.1804653 643.4836 19.22852
 
-## Example calculations
+## Calculate moments using ‘trait_moments’
 
 ### First: with default settings
 
@@ -149,7 +151,7 @@ result[1:20,1:ncol(result)]
     ## 9   Community.2 Trait.2   1.8883485 1.671073e+00 5.7676100 72.509588
     ## 10  Community.2 Trait.3          NA           NA        NA        NA
     ## 11  Community.2 Trait.4   0.2545458 5.552564e-03 0.7414051  1.973496
-    ## 12  Community.2 Trait.5 "rval"           NA        NA        NA
+    ## 12  Community.2 Trait.5          NA           NA        NA        NA
     ## 13  Community.2 Trait.6          NA           NA        NA        NA
     ## 14  Community.2 Trait.7          NA           NA        NA        NA
     ## 15  Community.3 Trait.1   0.3632115 3.431932e-02 0.4123648  2.012045
@@ -217,11 +219,11 @@ available for a large number of species.
 
 ## Visualisation of trait distributions based on moments
 
-A function for visualising trait distributions based on the moments is
-not yet available in ‘TraitMoments’, but I intend to implement it in
-later versions. Here I show how to visualise trait distributions for
-single communities using the package ‘PearsonDS’. Lets plot the
-distributions of Trait 1 for Community 1, 5 and 9:
+A function to visualise trait distributions based on moments is not yet
+available in ‘TraitMoments’, but I intend to implement it in later
+versions. Here I show how to visualise trait distributions for single
+communities using the package ‘PearsonDS’ that can be installed from
+CRAN. Lets plot the distributions of Trait 1 for Community 1, 5 and 9:
 
 Firstly, select the results for the tree distributions:
 
@@ -236,6 +238,7 @@ selected_results <- rbind(
 Second, density estimation via ‘rpearson’ and ‘density’:
 
 ``` r
+# install.packages("PearsonDS") # Run if not yet installed
 library(PearsonDS)
 set.seed(123)
 pearson_generation  <- rpearson(10000000,moments=c(mean = selected_results[1,3], variance = selected_results[1,4], skewness = selected_results[1,5], kurtosis = selected_results[1,6]))
@@ -259,7 +262,8 @@ plot(dens_Community.9_Trait.1$x,length(dens_Community.9_Trait.1$x)*dens_Communit
 
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-And inspect the corresponding moments:
+And inspect the corresponding moments in order to interpret the
+visualisation together with the numerical values:
 
 ``` r
 selected_results
@@ -270,25 +274,25 @@ selected_results
     ## 29  Community.5 Trait.1 0.5123229 0.02076393 -0.52748866 3.462511
     ## 57  Community.9 Trait.1 0.4290053 0.04829166 -0.02859744 1.858578
 
-The estimated distributions of trait 1 for the three communities look
-quite different. If we had only calculated the mean values, as is the
-case in many studies, some of these differences would have remained
-hidden. As mean and variance are regularly considered in functional
-ecology studies, I will emphasise how the distributions differ in terms
-of skewness and kurtosis. Skewness is a measure of the asymmetry of a
-distribution. Community 1 is strongly skewed to the right (positive
-skew), while community 5 is slightly skewed to the left (negative skew)
-and community 9 is almost symmetric (skew close to zero). Furthermore
-the three distributions differ with regard to the fourth moment, the
-kurtosis which is a characterization of a distributions “tailedness” or
-“peakedness”. Community 1 is quite peaked around a value of
-approximately 0.2, but also has a tail that extends far to the right.
-Although the distribution for community 5 looks less peaked at first
-glance, it has the highest kurtosis, as its tails are less pronounced
-than those of community 1. The distribution for community 9 has the
-least marked peak and short tails, i.e. a low kurtosis, which in the
-sense of Le Bagousse-Pinguet et al. (2021) would be indicative for a
-high functional evenness.
+The estimated distributions look quite different. If we had only
+calculated the mean values and perhaps a measure for the dispersion - as
+is the case in many studies - some of these differences would have
+remained hidden. As mean and variance are regularly considered in
+functional ecology studies, I will emphasise how the distributions
+differ in terms of skewness and kurtosis. Skewness is a measure of the
+asymmetry of a distribution. Community 1 is strongly skewed to the right
+(positive skew), while community 5 is slightly skewed to the left
+(negative skew) and community 9 is almost symmetric (skew close to
+zero). Furthermore the three distributions differ with regard to the
+fourth moment, the kurtosis which is a characterization of a
+distributions “tailedness” or “peakedness”. Community 1 is quite peaked
+around a value of approximately 0.2, but also has a tail that extends
+far to the right. Although the distribution for community 5 looks less
+peaked at first glance, it has the highest kurtosis, as its tails are
+less pronounced than those of community 1. The distribution for
+community 9 has the least marked peak and short tails, i.e. a low
+kurtosis, which in the sense of Le Bagousse-Pinguet et al. (2021) would
+be indicative for a high functional evenness.
 
 ## Final note on community weighted means (CWMs)
 
@@ -301,6 +305,7 @@ which trait information should be present.
 First we inspect the output of ‘functcomp’:
 
 ``` r
+# install.packages("FD") # Run if not yet installed
 library(FD)
 functcomp(traits, as.matrix(communities))
 ```
@@ -411,12 +416,20 @@ Bello, F. de, Carmona, C.P., Dias, A.T.C., Götzenberger, L., Moretti, M.
 & Berg, M.P. (2021) Handbook of Trait-Based Ecology. Cambridge
 University Press.
 
+Doane, D.P. & Seward, L.E. (2011) Measuring Skewness: A Forgotten
+Statistic? Journal of Statistics Education, 19(2). Available from:
+<https://doi.org/10.1080/10691898.2011.11889611>.
+
 Enquist, B.J., Norberg, J., Bonser, S.P., Violle, C., Webb, C.T. &
 Henderson, A. et al. (2015) Chapter Nine - Scaling from Traits to
 Ecosystems: Developing a General Trait Driver Theory via Integrating
 Trait-Based and Metabolic Scaling Theories. In: Pawar, S., Woodward, G.
 & Dell, A.I. (Eds.) Trait-Based Ecology - From Structure to Function.
 Academic Press.
+
+Fiori, A.M. & Zenga, M. (2009) Karl Pearson and the Origin of Kurtosis.
+International Statistical Review, 77(1), 40–50. Available from:
+<https://doi.org/10.1111/j.1751-5823.2009.00076.x>.
 
 Le Bagousse-Pinguet, Y., Gross, N., Maestre, F.T., Maire, V., Bello, F.
 de & Fonseca, C.R. et al. (2017) Testing the environmental filtering
