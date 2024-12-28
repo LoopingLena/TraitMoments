@@ -45,12 +45,39 @@ available trait information and the sum of relative abundance is equal
 to 100% for each community. Formulas 3 and 4 refer back to several works
 by Karl Pearson from the late 19th and early 20th century, which had a
 decisive influence on on the current understanding of skewness and
-kurtosis (see e.g. Fiori & Zenga 2009 or Doane & Seward 2011).
+kurtosis (see Fiori & Zenga 2009 or Doane & Seward 2011 for an
+overview).
 
 The calculation of all moments enables detailed insights into the shape
-of trait distributions. Moments can be linked to established frameworks
-of functional diversity (Bagousse-Pinguet et al. 2021) and the filtering
-concept (Enquist et al. 2015).
+of trait distributions. Enquist et al. (2015), Le Bagousse-Pinguet et
+al. (2017) and Bagousse-Pinguet et al. (2021) linked the moments of
+trait distributions to established frameworks of functional diversity
+and proposed the following terminology: The community-weighted mean
+(CWM) and the variance (CWV) allow for characterization of the
+functional dominance and dispersion respectively, while the skewness
+(CWS; asymmetry of a distributions) characterize the functional rarity
+and the kurtosis (CWK; relative “tailedness” or “peakedness” of a
+distribution) characterize the functional evenness. Negative or positive
+skewness strongly deviating from zero indicates a high functional
+rarity, while high kurtosis indicates a low functional evenness and vice
+versa. A broader interpretation of skewed trait distributions was
+proposed by Enquist et al. (2015): Skewed trait distributions indicate
+past or ongoing species turnover and/or environmental change as there is
+usually a time lag between growth and reproduction of immigrating
+species and the mortality of suppressed species. Figure 1 shows the
+precise relationship between moments and the shape of a distribution.
+
+<div class="figure" style="text-align: center">
+
+<img src="README_files/figure-gfm/unnamed-chunk-1-1.png" alt="Figure 1: Relationship between moments and the shape of a distribution. The graphs in grey show how the shape changes when the moment is increased relative to the black graph. Figure modified according to Le Bagousse-Pinguet et al. (2017) and Bagousse-Pinguet et al. (2021)."  />
+<p class="caption">
+Figure 1: Relationship between moments and the shape of a distribution.
+The graphs in grey show how the shape changes when the moment is
+increased relative to the black graph. Figure modified according to Le
+Bagousse-Pinguet et al. (2017) and Bagousse-Pinguet et al. (2021).
+</p>
+
+</div>
 
 ## Installation
 
@@ -129,14 +156,14 @@ perform the calculation for all 140 combinations of trait and community
 at once. We just inspect the head of the result:
 
 ``` r
-result <- trait_moments(communities, traits)
-dim(result)
+result1 <- trait_moments(communities = communities, traits = traits)
+dim(result1)
 ```
 
     ## [1] 140   6
 
 ``` r
-result[1:20,1:ncol(result)]
+result1[1:20,1:ncol(result1)]
 ```
 
     ##           comID   Trait        mean     variance  skewness  kurtosis
@@ -169,7 +196,7 @@ the cumulative relative abundance of the species for which trait
 information is available is less than 80% or if there is missing
 information for at leased one of the four most dominant species. Many
 studies use a threshold value of 80% cumulative relative abundance for
-the calculation of community weighted means (Bello et al. 2021). For the
+the calculation of community-weighted means (Bello et al. 2021). For the
 calculation of trait distribution moments, Le Bagousse-Pinguet et
 al. (2017) introduced the additional threshold that, trait data should
 be available for the four most dominant species to avoid any breaks in
@@ -181,14 +208,14 @@ arguments ‘n_species = 1’ and ‘abundance = 50’ we get a result that
 contains less NAs.
 
 ``` r
-result <- trait_moments(communities, traits, n_species = 1, abundance = 50)
+result2 <- trait_moments(communities = communities, traits = traits, n_species = 1, abundance = 50)
 ```
 
-    ## Warning in trait_moments(communities, traits, n_species = 1, abundance = 50):
-    ## Calculations with n_species < 4 may lead to unreliable results.
+    ## Warning in trait_moments(communities = communities, traits = traits, n_species
+    ## = 1, : Calculations with n_species < 4 may lead to unreliable results.
 
 ``` r
-result[1:20,1:ncol(result)]
+result2[1:20,1:ncol(result2)]
 ```
 
     ##           comID   Trait        mean     variance   skewness  kurtosis
@@ -214,30 +241,65 @@ result[1:20,1:ncol(result)]
     ## 20  Community.3 Trait.6 393.2414434 2.814167e+04  0.5838220  1.743911
 
 Conversely, the two arguments can also be used to apply stricter quality
-criteria. This is particularly appropriate when trait information is
-available for a large number of species.
+criteria. This could be appropriate if trait information is available
+for a large number of species.
 
-## Visualisation of trait distributions based on moments
+## Visualisation and ecological interpretation of trait distributions
 
-A function to visualise trait distributions based on moments is not yet
-available in ‘TraitMoments’, but I intend to implement it in later
-versions. Here I show how to visualise trait distributions for single
-communities using the package ‘PearsonDS’ that can be installed from
-CRAN. Lets plot the distributions of Trait 1 for Community 1, 5 and 9:
+Functions to visualise trait distributions are not yet available in
+‘TraitMoments’, but I intend to implement it in later versions. There
+are basically two different ways to visualise trait distributions,
+either in the manner of histograms or as density estimation based on
+calculated moments. In the following I will demonstrate both approaches
+for the distributions of Trait 1 for Community 1, 5 and 9.
 
-Firstly, select the results for the tree distributions:
+To prepare for visualisation as histogram, the the abundance of the
+species for the three communities will be selected from the data frame
+‘community’ and joined with the values for trait 1. The species are then
+divided into groups according to their trait values and within each
+group the sum of the relative abundances is calculated. Each group has
+the same range and the number of groups corresponds to the number of
+bars in the histogram:
+
+``` r
+# install.packages("tidyverse") # Run if not yet installed
+library(tidyverse)
+
+selected_communities <- as.data.frame(t(
+  rbind(
+  communities[1, 1:ncol(communities)],
+  communities[5, 1:ncol(communities)],
+  communities[9, 1:ncol(communities)],
+  Trait.1 = traits$Trait.1
+  )))
+selected_communities[selected_communities == 0] <- NA
+
+selected_communities$group <- "0.0 - 0.2"
+selected_communities[selected_communities$Trait.1 > 0.2, ]$group <- "0.2 - 0.4"
+selected_communities[selected_communities$Trait.1 > 0.4, ]$group <- "0.5 - 0.6"
+selected_communities[selected_communities$Trait.1 > 0.6, ]$group <- "0.6 - 0.8"
+selected_communities[selected_communities$Trait.1 > 0.8, ]$group <- "0.8 - 1.0"
+
+hist_data <- selected_communities %>% 
+    group_by(group) %>%
+    summarise(
+      Community.1 = sum(` Community.1`, na.rm=TRUE),
+      Community.5 = sum(` Community.5`, na.rm=TRUE),
+      Community.9 = sum(` Community.9`, na.rm=TRUE))
+```
+
+To perform a density estimation based on the calculated moments, we
+first select the moments provided by ‘trait_moments’ for the three
+distributions and use the package ‘PearsonDS’ to generate the input for
+the density estimation:
 
 ``` r
 selected_results <- rbind(
-  result[1, 1:ncol(result)],
-  result[29, 1:ncol(result)],
-  result[57, 1:ncol(result)]
+  result1[1, 1:ncol(result1)],
+  result1[29, 1:ncol(result1)],
+  result1[57, 1:ncol(result1)]
   )
-```
 
-Second, density estimation via ‘rpearson’ and ‘density’:
-
-``` r
 # install.packages("PearsonDS") # Run if not yet installed
 library(PearsonDS)
 set.seed(123)
@@ -251,19 +313,33 @@ pearson_generation  <- rpearson(10000000,moments=c(mean = selected_results[3,3],
 dens_Community.9_Trait.1 <- density(pearson_generation)
 ```
 
-Third, plot the density estimation:
+Finally, we plot the density estimation based on calculated moments next
+to the corresponding histograms:
 
 ``` r
-par(mfrow = c(3, 1))
-plot(dens_Community.1_Trait.1$x,length(dens_Community.1_Trait.1$x)*dens_Community.1_Trait.1$y,type="l",xlab="Value",ylab="Frequency", yaxt='n', main = "Community 1 Trait 1", xlim = c(0,1))
-plot(dens_Community.5_Trait.1$x,length(dens_Community.5_Trait.1$x)*dens_Community.5_Trait.1$y,type="l",xlab="Value",ylab="Frequency", yaxt='n', main = "Community 5 Trait 1", xlim = c(0,1))
-plot(dens_Community.9_Trait.1$x,length(dens_Community.9_Trait.1$x)*dens_Community.9_Trait.1$y,type="l",xlab="Value",ylab="Frequency", yaxt='n', main = "Community 9 Trait 1", xlim = c(0,1))
+par(mfrow = c(3, 2))
+plot(dens_Community.1_Trait.1, type="l", xlab="Trait value", ylab="Frequency", yaxt='n', main = "Community 1 Trait 1", xlim = c(0,1))
+barplot(hist_data$Community.1, names.arg = hist_data$group, xlab="Trait value",ylab="Frequency", yaxt='n', main = "Community 1 Trait 1")
+plot(dens_Community.5_Trait.1, type="l", xlab="Trait value", ylab="Frequency", yaxt='n', main = "Community 5 Trait 1", xlim = c(0,1))
+barplot(hist_data$Community.5, names.arg = hist_data$group, xlab="Trait value", ylab="Frequency", yaxt='n', main = "Community 5 Trait 1")
+plot(dens_Community.9_Trait.1, type="l",xlab="Trait value",ylab="Frequency", yaxt='n', main = "Community 9 Trait 1", xlim = c(0,1))
+barplot(hist_data$Community.9, names.arg = hist_data$group, xlab="Trait value", ylab="Frequency", yaxt='n', main = "Community 9 Trait 1")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+<div class="figure" style="text-align: center">
 
-And inspect the corresponding moments in order to interpret the
-visualisation together with the numerical values:
+<img src="README_files/figure-gfm/unnamed-chunk-8-1.png" alt="Figure 2: Distributions for trait 1 in the communies 1, 5 and 9 as density estimation based on calculated moments (left paneles) and histograms (right panels)."  />
+<p class="caption">
+Figure 2: Distributions for trait 1 in the communies 1, 5 and 9 as
+density estimation based on calculated moments (left paneles) and
+histograms (right panels).
+</p>
+
+</div>
+
+In order to interpret the visualisation together with the corresponding
+moments, we take a look at the values obtained from ‘trait_moments’ for
+the three distributions.
 
 ``` r
 selected_results
@@ -274,27 +350,39 @@ selected_results
     ## 29  Community.5 Trait.1 0.5123229 0.02076393 -0.52748866 3.462511
     ## 57  Community.9 Trait.1 0.4290053 0.04829166 -0.02859744 1.858578
 
-The estimated distributions look quite different. If we had only
-calculated the mean values and perhaps a measure for the dispersion - as
-is the case in many studies - some of these differences would have
-remained hidden. As mean and variance are regularly considered in
-functional ecology studies, I will emphasise how the distributions
-differ in terms of skewness and kurtosis. Skewness is a measure of the
-asymmetry of a distribution. Community 1 is strongly skewed to the right
-(positive skew), while community 5 is slightly skewed to the left
-(negative skew) and community 9 is almost symmetric (skew close to
-zero). Furthermore the three distributions differ with regard to the
-fourth moment, the kurtosis which is a characterization of a
-distributions “tailedness” or “peakedness”. Community 1 is quite peaked
-around a value of approximately 0.2, but also has a tail that extends
-far to the right. Although the distribution for community 5 looks less
-peaked at first glance, it has the highest kurtosis, as its tails are
-less pronounced than those of community 1. The distribution for
-community 9 has the least marked peak and short tails, i.e. a low
-kurtosis, which in the sense of Le Bagousse-Pinguet et al. (2021) would
-be indicative for a high functional evenness.
+First, we can state that the density estimations based on calculated
+moments and the histograms based on species trait values and abundance
+correspond quite well. We also note that the shape of the distributions
+is very distinct across the three communities. If we had only calculated
+the mean values and perhaps a measure for the dispersion - as is the
+case in many studies - some of these differences would have remained
+hidden. As mean and variance are regularly considered in functional
+ecology studies, I will emphasise how the distributions differ in terms
+of skewness and kurtosis.
 
-## Final note on community weighted means (CWMs)
+Skewness is a measure of the asymmetry of a distribution. Community 1 is
+strongly skewed to the right (positive skew), while community 5 is
+slightly skewed to the left (negative skew) and community 9 is almost
+symmetric (skew close to zero). Applying the terminology of Le
+Bagousse-Pinguet et al. (2021) to the three distributions, we could
+conclude that community 1 is characterised by a high functional rarity,
+as there are many rare species with infrequent trait values compared to
+the dominant species. In contrast, community 9 would be characterised by
+a very low functional rarity, as there are no rare species with uncommon
+trait values.
+
+Furthermore the three distributions differ with regard to the fourth
+moment, the kurtosis which is a characterization of a distributions
+“tailedness” or “peakedness”. Community 1 is quite peaked around a value
+of approximately 0.2, but also has a tail that extends far to the right.
+Although the distribution for community 5 looks less peaked at first
+glance, it has the highest kurtosis, as its tails are less pronounced
+than those of community 1. The distribution for community 9 has the
+least marked peak and short tails, i.e. a low kurtosis, which in the
+sense of Le Bagousse-Pinguet et al. (2021) would be indicative for a
+high functional evenness.
+
+## Final note on community-weighted means (CWMs)
 
 The function ‘functcomp’ from the package ‘FD’ is frequently used to
 calculate CWMs. In the following I will demonstrate that ‘functcomp’ and
