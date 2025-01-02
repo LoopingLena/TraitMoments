@@ -13,7 +13,9 @@ knitr::opts_chunk$set(echo = TRUE)
 Efficient calculation of trait distribution moments.
 
 <!-- badges: start -->
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 <!-- badges: end -->
 
 TraitMoments provides an efficient function to calculate mean, variance, skewness and kurtosis (all weighted by species relative abundance) of trait distribution across large community and traits datasets. The calculation is performed according to the equations number 1 to 4 from Le Bagousse-Pinguet et al. (2017): 
@@ -147,7 +149,7 @@ Conversely, the two arguments can also be used to apply stricter quality criteri
 
 Functions to visualise trait distributions are not yet available in ‘TraitMoments’, but I intend to implement it in later versions. There are basically two different ways to visualise trait distributions, either in the manner of histograms or as density estimation based on calculated moments. In the following I will demonstrate both approaches for the distributions of Trait 1 for Community 1, 5 and 9.
 
-To prepare for visualisation as histogram, the the abundance of the species for the three communities will be selected from the data frame 'community' and joined with the values for trait 1. The species are then divided into groups according to their trait values and within each group the sum of the relative abundances is calculated. Each group has the same range and the number of groups corresponds to the number of bars in the histogram:
+To prepare for visualisation as histogram, the abundance of the species for the three communities will be selected from the data frame 'community' and joined with the values for trait 1. The species are then divided into groups according to their trait values and within each group the sum of the relative abundances is calculated. Each group has the same range and the number of groups corresponds to the number of bars in the histogram:
 
 ```{r, message=FALSE, warning=FALSE}
 # install.packages("tidyverse") # Run if not yet installed
@@ -256,7 +258,7 @@ We receive a warning that CWMs but no moments can be calculated if we set 'n_spe
 
 Please cite as:
 
-> Falk-Rudhard Schreiner (`r format(Sys.Date(), "%Y")`). TraitMoments: Efficient calculation of trait distribution moments. Online at <https://github.com/SchreinerFR/TraitMoments>.
+> Falk-Rudhard Schreiner (2024). TraitMoments: Efficient calculation of trait distribution moments. Available from: <https://github.com/SchreinerFR/TraitMoments>.
 
 
 # References
