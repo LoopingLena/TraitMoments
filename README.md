@@ -494,7 +494,7 @@ exactly the same result.
 
 Please cite as:
 
-> Falk-Rudhard Schreiner (2024). TraitMoments: Efficient calculation of
+> Falk-Rudhard Schreiner (2025). TraitMoments: Efficient calculation of
 > trait distribution moments. Online at
 > <https://github.com/SchreinerFR/TraitMoments>.
 
