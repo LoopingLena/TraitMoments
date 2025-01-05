@@ -113,20 +113,20 @@ library(TraitMoments)
 
 ## Explore example data
 
-TraitMoments provides two example data frames. The data frame 'communities' contains the relative abundances for 93 species from 20 communities and 'traits' provides information on seven traits for the corresponding species. For some species, no information is available for certain traits, so the data frame 'traits' contains some NAs. Since both data frames are quite large, we just inspect the heads in this example:
+TraitMoments comes with two example data frames that can be loaded with ‘data(trait_moments_data)’. The data frame 'communities' contains the relative abundances for 93 species from nine communities and 'traits' provides information on five traits for the corresponding species. For some species, no information is available for certain traits, so the data frame 'traits' contains some NAs. Since both data frames are quite large, we just inspect the heads in this example:
 
 ```{r, message=FALSE}
 data(trait_moments_data)
 
-communities[1:20,1:5] 
-traits[1:6,1:ncol(traits)] 
+communities[1:9,1:6] 
+traits[1:6,1:5] 
 ```
 
 ## Calculate moments using ‘trait_moments’
 
 ### First: with default settings
 
-Now we use the function 'trait_moments' to calculate the moments of all trait distributions for each trait and each community. The function will perform the calculation for all 140 combinations of trait and community at once. We just inspect the head of the result:
+Now we use the function 'trait_moments' to calculate the moments of all trait distributions for each trait and each community. The function will perform the calculation for all 45 combinations of trait and community at once. We just inspect the head of the result:
 
 ```{r}
 result1 <- trait_moments(communities = communities, traits = traits)

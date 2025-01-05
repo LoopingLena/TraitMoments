@@ -28,86 +28,109 @@ trait_moments <- function(communities, traits, n_species = 4, abundance = 80) {
   if (n_species == 0) {warning("If 'n_species' = 0 no moments but only CWMs can be calculated.")}
   if (n_species < 4) {warning("It is not recommended to use 'n_species' < 4 for the calculation of higher moments. Consider to increase 'n_species'.")}
 
-  # Calculate relative abundances and gather communities to long format
+  # Calculate relative abundances
   cover_com <- rowSums(communities)
   communities <- communities * (100/cover_com)
   communities$comID <- row.names(communities)
-  #communities <- tidyr::gather(communities, "Species", "Cover", -comID)
-  communities <- communities %>% pivot_longer(!comID, names_to = "Species", values_to = "Cover")
 
-  # Gather traits to long format
+  # Reshape communities to long format
+  communities <- reshape(
+    communities,
+    varying = colnames(communities)[-ncol(communities)],
+    v.names = "Cover",
+    timevar = "Species",
+    times = colnames(communities)[-ncol(communities)],
+    idvar = "comID",
+    direction = "long")
+
+  rownames(communities) <- NULL
+
+  # Reshape traits to long format
   traits$Species <- row.names(traits)
-  #traits <- tidyr::gather(traits, "Trait", "Value", -Species)
-  traits <- traits %>% pivot_longer(!Species, names_to = "Trait", values_to = "Value")
 
-  # Full join of communities and traits
-  community_traits <- full_join(communities, traits, by = "Species", relationship = "many-to-many")
+  traits <- reshape(
+    traits,
+    varying = colnames(traits)[-ncol(traits)],
+    v.names = "Value",
+    timevar = "Trait",
+    times = colnames(traits)[-ncol(traits)],
+    idvar = "Species",
+    direction = "long")
+
+  rownames(traits) <- NULL
+
+
+  # Merge communities and traits
+  community_traits <- merge(communities, traits, by = "Species", all = TRUE)
 
   # Store the complete set of all possible trait-plot-combinations
-  com_trait <- community_traits %>%
-    select(comID, Trait) %>%
-    unique()
+  com_trait <- unique(community_traits[1:nrow(community_traits), c(2,4)])
 
   # Calculate the cumulative relative abundance for which trait information is available
   community_traits$isValue <- 1
   community_traits[is.na(community_traits$Value), ]$isValue <- 0
   community_traits$Cover_isValue <- community_traits$Cover * community_traits$isValue
 
-  community_traits <- community_traits %>%
-    group_by(comID, Trait) %>%
-    summarise(Plotcover_isValue = sum(Cover_isValue)) %>%
-    right_join(community_traits, by = c("comID", "Trait")) %>%
-    mutate(Cover_relativ = 0.01 * Cover * (100/Plotcover_isValue)) %>%
-    mutate(Value_x_Cover_relativ = Value * Cover_relativ)
+  agg_cover_isValue <- aggregate(Cover_isValue ~ comID + Trait, data = community_traits, FUN = function(x) sum(x, na.rm = TRUE))
+  community_traits <- merge(community_traits, agg_cover_isValue, by = c("comID", "Trait"), suffixes = c("", "_sum"))
+  community_traits$Cover_relativ <- 0.01 * community_traits$Cover * (100 / community_traits$Cover_isValue_sum)
+  community_traits$Value_x_Cover_relativ <- community_traits$Value * community_traits$Cover_relativ
 
   # Calculate moments
-  community_traits <- community_traits %>%
-    group_by(comID, Trait) %>%
-    summarise(
-      mean = sum(Value_x_Cover_relativ, na.rm=TRUE),
-      variance = sum(Cover_relativ*(Value -mean)^2, na.rm=TRUE),
-      skewness = sum((Cover_relativ*(Value -mean)^3) / variance^(3/2), na.rm=TRUE),
-      kurtosis = sum((Cover_relativ*(Value -mean)^4) / variance^2, na.rm=TRUE)) %>%
-    right_join(community_traits, by = c("comID", "Trait"))
+  means <- aggregate(Value_x_Cover_relativ ~ comID + Trait, data = community_traits, FUN = function(x) sum(x, na.rm = TRUE))
+  colnames(means)[3] <- "mean"
+  community_traits <- merge(community_traits, means, by = c("comID", "Trait"))
+
+  community_traits$variance <- ave(
+    community_traits$Cover_relativ * (community_traits$Value - community_traits$mean)^2,
+    community_traits$comID, community_traits$Trait, FUN = function(x) sum(x, na.rm = TRUE))
+
+  community_traits$skewness <- ave(
+    community_traits$Cover_relativ * (community_traits$Value - community_traits$mean)^3 / community_traits$variance^(3/2),
+    community_traits$comID, community_traits$Trait, FUN = function(x) sum(x, na.rm = TRUE))
+
+  community_traits$kurtosis <- ave(
+    community_traits$Cover_relativ * (community_traits$Value - community_traits$mean)^4 / community_traits$variance^2,
+    community_traits$comID, community_traits$Trait, FUN = function(x) sum(x, na.rm = TRUE))
+
 
   # Check if trait information is available for the predominant species
-  community_traits <- community_traits %>%
-    group_by(comID, Trait) %>%
-    arrange(desc(Cover_relativ), .by_group = TRUE) %>%
-    slice_head(n = n_species) %>%
-    summarise(nValues = sum(isValue, na.rm=TRUE)) %>%
-    right_join(community_traits, by = c("comID", "Trait"))
+  community_traits <- community_traits[order(community_traits$comID,
+                                             community_traits$Trait,
+                                             -community_traits$Cover_relativ), ]
+
+  predominant <- do.call(rbind, lapply(split(community_traits, list(community_traits$comID, community_traits$Trait)),
+                                       function(sub) {
+                                         if (nrow(sub) >= n_species) {
+                                           sub[1:n_species, ]
+                                         } else {
+                                           sub
+                                         }
+                                       }))
+
+  n_values_predominant <- aggregate(isValue ~ comID + Trait, data = predominant, FUN = sum)
+  colnames(n_values_predominant)[3] <- "n_values_predominant"
+
+  community_traits <- merge(community_traits, n_values_predominant, by = c("comID", "Trait"), all.x = TRUE)
 
   # For the mean: select if cumulative relative abundance is high enough
-  community_traits1 <- community_traits %>%
-    filter(Plotcover_isValue > abundance) %>%
-    select(
-      comID,
-      Trait,
-      mean) %>%
-    unique()
+  community_traits1 <- unique(
+    subset(community_traits, Cover_isValue_sum > abundance,
+           select = c(comID, Trait, mean)))
 
   # For the higher moments: select if cumulative relative abundance is high enough and if trait information is available for the predominant species
-  community_traits2 <- community_traits %>%
-    filter(Plotcover_isValue > abundance & nValues == n_species) %>%
-    select(
-      comID,
-      Trait,
-      variance,
-      skewness,
-      kurtosis) %>%
-    unique()
+  community_traits2 <- unique(
+    subset(community_traits, Cover_isValue_sum > abundance & n_values_predominant == n_species,
+           select = c(comID, Trait, variance, skewness, kurtosis)))
 
-# Join the complete set of all possible trait-plot-combinations with the calculated moments
-  community_traits1 <- full_join(com_trait, community_traits1, by=c("comID","Trait"))
-  community_traits <- full_join(community_traits1, community_traits2, by=c("comID","Trait"))
+  # Merge the complete set of all possible trait-plot-combinations with the calculated moments
+  community_traits1 <- merge(com_trait, community_traits1, by=c("comID","Trait"), all.x = TRUE)
+  community_traits <- merge(community_traits1, community_traits2, by=c("comID","Trait"), all.x = TRUE)
 
   community_traits <- as.data.frame(community_traits)
 
   return(community_traits)
 }
-
-
 
 
 

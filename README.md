@@ -105,52 +105,42 @@ library(TraitMoments)
 
 ## Explore example data
 
-TraitMoments provides two example data frames. The data frame
-‘communities’ contains the relative abundances for 93 species from 20
-communities and ‘traits’ provides information on seven traits for the
-corresponding species. For some species, no information is available for
-certain traits, so the data frame ‘traits’ contains some NAs. Since both
-data frames are quite large, we just inspect the heads in this example:
+TraitMoments comes with two example data frames that can be loaded with
+‘data(trait_moments_data)’. The data frame ‘communities’ contains the
+relative abundances for 93 species from nine communities and ‘traits’
+provides information on five traits for the corresponding species. For
+some species, no information is available for certain traits, so the
+data frame ‘traits’ contains some NAs. Since both data frames are quite
+large, we just inspect the heads in this example:
 
 ``` r
 data(trait_moments_data)
 
-communities[1:20,1:5] 
+communities[1:9,1:6] 
 ```
 
-    ##               Species.1 Species.2 Species.3 Species.4 Species.5
-    ##  Community.1      0.616     0.000     0.000     0.123     0.000
-    ##  Community.2      0.000     0.000     0.000     0.000     0.000
-    ##  Community.3      0.000     0.000     0.000     0.000     0.000
-    ##  Community.4      0.000     0.000     0.000     0.788     0.000
-    ##  Community.5      0.435     0.000     0.000     0.087     0.000
-    ##  Community.6      0.000     0.000     0.000     0.000     0.000
-    ##  Community.7      0.000     0.000     0.000     0.000     0.000
-    ##  Community.8      0.000     0.000     0.000     0.000     0.000
-    ##  Community.9      3.260     0.000     0.000     0.000     0.543
-    ##  Community.10     0.000     0.000     0.000     0.000     0.000
-    ##  Community.11    12.843     0.000     0.917     0.000     0.000
-    ##  Community.12     0.384     0.077     0.000     0.000     0.000
-    ##  Community.13     0.000     0.106     0.000     0.000     0.000
-    ##  Community.14     0.000     0.000     0.000     0.000     0.000
-    ##  Community.15     0.000     0.000     1.181     0.000     0.000
-    ##  Community.16     3.498     0.000     0.000     0.000     0.000
-    ##  Community.17     0.066     0.000     0.000     0.000     0.000
-    ##  Community.18     1.225     0.000     0.000     0.000     0.000
-    ##  Community.19     0.863     0.000     0.000     0.000     0.000
-    ##  Community.20     0.078     0.000     0.000     0.000     0.000
+    ##              Species.1 Species.2 Species.3 Species.4 Species.5 Species.6
+    ##  Community.1     0.616         0         0     0.123     0.000     0.123
+    ##  Community.2     0.000         0         0     0.000     0.000    11.834
+    ##  Community.3     0.000         0         0     0.000     0.000    10.473
+    ##  Community.4     0.000         0         0     0.788     0.000     3.941
+    ##  Community.5     0.435         0         0     0.087     0.000     8.706
+    ##  Community.6     0.000         0         0     0.000     0.000    10.766
+    ##  Community.7     0.000         0         0     0.000     0.000     7.201
+    ##  Community.8     0.000         0         0     0.000     0.000    10.447
+    ##  Community.9     3.260         0         0     0.000     0.543     0.000
 
 ``` r
-traits[1:6,1:ncol(traits)] 
+traits[1:6,1:5] 
 ```
 
-    ##           Trait.1 Trait.2 Trait.3 Trait.4 Trait.5 Trait.6 Trait.7
-    ## Species.1   0.301   0.137  13.168   0.196   0.201 462.614  33.257
-    ## Species.2   0.510   8.884  16.037   0.330   0.263 108.836  77.900
-    ## Species.3   0.352   0.041  21.778   0.257   0.125 519.544  23.213
-    ## Species.4   0.367   0.351  15.383   0.198      NA      NA      NA
-    ## Species.5   0.450   3.435   9.438   0.161      NA      NA      NA
-    ## Species.6   0.623   1.090  27.801   0.385   0.180 643.484  19.229
+    ##           Trait.1 Trait.2 Trait.3 Trait.4 Trait.5
+    ## Species.1   0.301   0.137  13.168   0.196   0.201
+    ## Species.2   0.510   8.884  16.037   0.330   0.263
+    ## Species.3   0.352   0.041  21.778   0.257   0.125
+    ## Species.4   0.367   0.351  15.383   0.198      NA
+    ## Species.5   0.450   3.435   9.438   0.161      NA
+    ## Species.6   0.623   1.090  27.801   0.385   0.180
 
 ## Calculate moments using ‘trait_moments’
 
@@ -158,7 +148,7 @@ traits[1:6,1:ncol(traits)]
 
 Now we use the function ‘trait_moments’ to calculate the moments of all
 trait distributions for each trait and each community. The function will
-perform the calculation for all 140 combinations of trait and community
+perform the calculation for all 45 combinations of trait and community
 at once. We just inspect the head of the result:
 
 ``` r
