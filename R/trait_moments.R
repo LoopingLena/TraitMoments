@@ -1,7 +1,7 @@
 
 #' trait_moments
 #'
-#' trait_moments calculates all moments (mean, variance, skewness and kurtosis) of trait distribution across large community and traits datasets. The calculation is performed according to the equations number 1 to 4 from Le Bagousse-Pinguet et al. (2017).
+#' trait_moments calculates all moments (community-weighted mean, variance, skewness and kurtosis) of trait distribution across large community and traits datasets. The calculation is performed according to the equations number 1 to 4 from Le Bagousse-Pinguet et al. (2017).
 #' See detailed information on the calculation in the github documentation
 #' [TraitMoments](https://github.com/SchreinerFR/TraitMoments).
 #'
@@ -9,7 +9,7 @@
 #' @param traits The species-trait-matrix as data frame. Column names must be trait IDs and row names species IDs. The species IDs must be consistent with those from the species-plot-matrix. Trait values have to be numeric.
 #' @param n_species Number of predominant species for which trait information must be present. If the criterion is not met, NA is returned for the trait-plot-combination. Default is 4.
 #' @param abundance Cumulative relative abundance for which trait information must be present. If the criterion is not met, NA is returned for the trait-plot-combination. Default is 80%.
-#' @return Mean (CWM), variance, skewness and kurtosis of all trait distributions for each trait and each community.
+#' @return Mean (CWM), variance (CWV), skewness (CWS) and kurtosis (CWK) of all trait distributions for each trait and each community.
 #' @examples
 #' \dontrun{
 #' result <- trait_moments(example_communitys, example_traits, n_species = 5, abundance = 80)
@@ -21,11 +21,12 @@
 trait_moments <- function(communities, traits, n_species = 4, abundance = 80) {
 
   # Warnings and Errors
-  if (is.data.frame(communities) != TRUE) {stop("Species-plot-matrix is not a dataframe.")}
-  if (is.data.frame(traits) != TRUE) {stop("Species-trait-matrix is not a dataframe.")}
-  if (identical(sort(colnames(communities)), sort(rownames(traits))) != TRUE) {stop("Species-IDs in species-plot-matrix and species-trait-matrix are not identical.")}
-  if (n_species == 0) {warning("If n_species = 0 no moments but only cwms can be calculated.")}
-  if (n_species < 4) {warning("Calculations with n_species < 4 may lead to unreliable results.")}
+  if (is.data.frame(communities) != TRUE) {stop("The object 'communities' is not a dataframe.")}
+  if (is.data.frame(traits) != TRUE) {stop("The object 'traits' is not a dataframe.")}
+  if (identical(sort(colnames(communities)), sort(rownames(traits))) != TRUE) {stop("Species-IDs in 'communities' and 'traits' are not identical.")}
+  if (any(is.na(communities))) {stop("The 'communities' dataframe contains missing values (NA). Consider replacing NAs by 0.")}
+  if (n_species == 0) {warning("If 'n_species' = 0 no moments but only CWMs can be calculated.")}
+  if (n_species < 4) {warning("It is not recommended to use 'n_species' < 4 for the calculation of higher moments. Consider to increase 'n_species'.")}
 
   # Calculate relative abundances and gather communities to long format
   cover_com <- rowSums(communities)

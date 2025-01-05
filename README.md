@@ -106,14 +106,15 @@ library(TraitMoments)
 ## Explore example data
 
 TraitMoments provides two example data frames. The data frame
-‘communities’ contains the abundances for 93 species from 20 communities
-and ‘traits’ provides information on seven traits for the corresponding
-species. For some species, no information is available for certain
-traits, so the data frame ‘traits’ contains some NAs. Since both data
-frames are quite large, we just inspect the heads in this example:
+‘communities’ contains the relative abundances for 93 species from 20
+communities and ‘traits’ provides information on seven traits for the
+corresponding species. For some species, no information is available for
+certain traits, so the data frame ‘traits’ contains some NAs. Since both
+data frames are quite large, we just inspect the heads in this example:
 
 ``` r
 data(trait_moments_data)
+
 communities[1:20,1:5] 
 ```
 
