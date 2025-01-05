@@ -423,7 +423,7 @@ least marked peak and short tails, i.e. a low kurtosis, which in the
 sense of Le Bagousse-Pinguet et al. (2021) would be indicative for a
 high functional evenness.
 
-## Final note on community-weighted means (CWMs)
+## Special note on community-weighted means (CWMs)
 
 The function ‘functcomp’ from the package ‘FD’ is frequently used to
 calculate CWMs. In the following I will demonstrate that ‘functcomp’ and
@@ -524,6 +524,14 @@ ignore this warning. ‘Trait_moments’ generates exactly the same CWMs as
 reliable results (level can be chosen by the user), it returns NAs. If
 we set ‘n_species = 0’ and ‘abundance = 0’, the two functions return
 exactly the same result.
+
+# Further development
+
+As TraitMoments is still under development, please let me know if you
+encounter any bugs or problems. If bugs occur with v0.0.2 please revert
+to v0.0.1 which should run stable. For later versions I intend to
+implement the visualisation of trait distributions as a custom function
+in TraitMoments.
 
 # Citation
 

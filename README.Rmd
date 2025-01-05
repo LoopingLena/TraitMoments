@@ -233,7 +233,7 @@ Skewness is a measure of the asymmetry of a distribution. Community 1 is strongl
 Furthermore the three distributions differ with regard to the fourth moment, the kurtosis which is a characterization of a distributions “tailedness” or "peakedness". Community 1 is quite peaked around a value of approximately 0.2, but also has a tail that extends far to the right. Although the distribution for community 5 looks less peaked at first glance, it has the highest kurtosis, as its tails are less pronounced than those of community 1. The distribution for community 9 has the least marked peak and short tails, i.e. a low kurtosis, which in the sense of Le Bagousse-Pinguet et al. (2021) would be indicative for a high functional evenness.  
 
 
-## Final note on community-weighted means (CWMs)
+## Special note on community-weighted means (CWMs)
 
 The function 'functcomp' from the package 'FD' is frequently used to calculate CWMs. In the following I will demonstrate that ‘functcomp’ and ‘trait_moments’ return exactly the same values, however ‘trait_moments’ enables to specify a threshold for the cumulative relative abundance for which trait information should be present.  
 
@@ -253,6 +253,10 @@ result
 ```
 
 We receive a warning that CWMs but no moments can be calculated if we set 'n_species = 0'. Since this is our goal in this special case we can ignore this warning. 'Trait_moments' generates exactly the same CWMs as 'functcomp', but if there is not suficient trait information to obtain reliable results (level can be chosen by the user), it returns NAs. If we set 'n_species = 0' and 'abundance = 0', the two functions return exactly the same result.
+
+# Further development
+
+As TraitMoments is still under development, please let me know if you encounter any bugs or problems. If bugs occur with v0.0.2 please revert to v0.0.1 which should run stable. For later versions I intend to implement the visualisation of trait distributions as a custom function in TraitMoments.
 
 # Citation
 
