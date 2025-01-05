@@ -538,8 +538,19 @@ in TraitMoments.
 Please cite as:
 
 > Falk-Rudhard Schreiner (2024). TraitMoments: Efficient calculation of
-> trait distribution moments. Available from:
+> trait distribution moments. R package version 0.0.2. Available from:
 > <https://github.com/SchreinerFR/TraitMoments>.
+
+Corresponding BibTeX entry:
+
+> @Manual{,  
+> title = {TraitMoments: Efficient calculation of trait distribution
+> moments},  
+> author = {Falk-Rudhard Schreiner},  
+> year = {2024},  
+> note = {R package version 0.0.2},  
+> url = {<https://github.com/SchreinerFR/TraitMoments>},  
+> }
 
 ## References
 
