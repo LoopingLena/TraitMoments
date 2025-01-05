@@ -218,7 +218,8 @@ result2 <- trait_moments(communities = communities, traits = traits, n_species =
 ```
 
     ## Warning in trait_moments(communities = communities, traits = traits, n_species
-    ## = 1, : Calculations with n_species < 4 may lead to unreliable results.
+    ## = 1, : It is not recommended to use 'n_species' < 4 for the calculation of
+    ## higher moments. Consider to increase 'n_species'.
 
 ``` r
 result2[1:20,1:ncol(result2)]
@@ -457,10 +458,11 @@ result <- trait_moments(communities, traits, n_species = 0, abundance = 80)
 ```
 
     ## Warning in trait_moments(communities, traits, n_species = 0, abundance = 80):
-    ## If n_species = 0 no moments but only cwms can be calculated.
+    ## If 'n_species' = 0 no moments but only CWMs can be calculated.
 
     ## Warning in trait_moments(communities, traits, n_species = 0, abundance = 80):
-    ## Calculations with n_species < 4 may lead to unreliable results.
+    ## It is not recommended to use 'n_species' < 4 for the calculation of higher
+    ## moments. Consider to increase 'n_species'.
 
 ``` r
 result[1:20,1:ncol(result)]
