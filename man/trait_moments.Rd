@@ -16,12 +16,12 @@ trait_moments(communities, traits, n_species = 4, abundance = 80)
 \item{abundance}{Cumulative relative abundance for which trait information must be present. If the criterion is not met, NA is returned for the trait-plot-combination. Default is 80\%.}
 }
 \value{
-Mean (CWM), variance, skewness and kurtosis of all trait distributions for each trait and each community.
+Mean (CWM), variance (CWV), skewness (CWS) and kurtosis (CWK) of all trait distributions for each trait and each community.
 }
 \description{
-trait_moments calculates all moments (mean, variance, skewness and kurtosis) of trait distribution across large community and traits datasets. The calculation is performed according to the equations number 1 to 4 from Le Bagousse-Pinguet et al. (2017).
-See detailed information on the calculation in the github documentation:
-\href{https://github.com/SchreinerFR/TraitMoments}{SchreinerFR/TraitMoments}
+trait_moments calculates all moments (community-weighted mean, variance, skewness and kurtosis) of trait distribution across large community and traits datasets. The calculation is performed according to the equations number 1 to 4 from Le Bagousse-Pinguet et al. (2017).
+See detailed information on the calculation in the github documentation
+\href{https://github.com/SchreinerFR/TraitMoments}{TraitMoments}.
 }
 \examples{
 \dontrun{
