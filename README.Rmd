@@ -126,12 +126,11 @@ traits[1:6,1:5]
 
 ### First: with default settings
 
-Now we use the function 'trait_moments' to calculate the moments of all trait distributions for each trait and each community. The function will perform the calculation for all 45 combinations of trait and community at once. We just inspect the head of the result:
+Now we use the function 'trait_moments' to calculate the moments of all trait distributions for each trait and each community. The function will perform the calculation for all 45 combinations of trait and community at once. 
 
 ```{r}
 result1 <- trait_moments(communities = communities, traits = traits)
-dim(result1)
-result1[1:20,1:ncol(result1)]
+result1
 ```
 
 
@@ -141,7 +140,7 @@ The first attempt resulted in a data frame that contains several NAs. This is be
 
 ```{r}
 result2 <- trait_moments(communities = communities, traits = traits, n_species = 1, abundance = 50)
-result2[1:20,1:ncol(result2)]
+result2
 ```
 
 Conversely, the two arguments can also be used to apply stricter quality criteria. This could be appropriate if trait information is available for a large number of species. 
@@ -187,8 +186,8 @@ To perform a density estimation based on the calculated moments, we first select
 
 selected_results <- rbind(
   result1[1, 1:ncol(result1)],
-  result1[29, 1:ncol(result1)],
-  result1[57, 1:ncol(result1)]
+  result1[21, 1:ncol(result1)],
+  result1[41, 1:ncol(result1)]
   )
 
 # install.packages("PearsonDS") # Run if not yet installed
@@ -250,7 +249,7 @@ As already stated above, in many cases it is advisable to set a threshold value 
 
 ```{r}
 result <- trait_moments(communities, traits, n_species = 0, abundance = 80)
-result[1:20,1:ncol(result)]
+result
 ```
 
 We receive a warning that CWMs but no moments can be calculated if we set 'n_species = 0'. Since this is our goal in this special case we can ignore this warning. 'Trait_moments' generates exactly the same CWMs as 'functcomp', but if there is not suficient trait information to obtain reliable results (level can be chosen by the user), it returns NAs. If we set 'n_species = 0' and 'abundance = 0', the two functions return exactly the same result.

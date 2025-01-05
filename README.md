@@ -149,40 +149,59 @@ traits[1:6,1:5]
 Now we use the function ‘trait_moments’ to calculate the moments of all
 trait distributions for each trait and each community. The function will
 perform the calculation for all 45 combinations of trait and community
-at once. We just inspect the head of the result:
+at once.
 
 ``` r
 result1 <- trait_moments(communities = communities, traits = traits)
-dim(result1)
+result1
 ```
 
-    ## [1] 140   6
-
-``` r
-result1[1:20,1:ncol(result1)]
-```
-
-    ##           comID   Trait        mean     variance  skewness  kurtosis
-    ## 1   Community.1 Trait.1   0.3712632 3.780533e-02 0.9893821  2.879616
-    ## 2   Community.1 Trait.2   1.9322662 6.481573e+00 1.7553168  4.834195
-    ## 3   Community.1 Trait.3  25.2494601 7.361035e+01 1.7575311  5.510149
-    ## 4   Community.1 Trait.4   0.2665842 5.976908e-03 0.1038558  1.574355
-    ## 5   Community.1 Trait.5          NA           NA        NA        NA
-    ## 6   Community.1 Trait.6          NA           NA        NA        NA
-    ## 7   Community.1 Trait.7          NA           NA        NA        NA
-    ## 8   Community.2 Trait.1   0.3682247 2.280394e-02 0.9134265  2.827577
-    ## 9   Community.2 Trait.2   1.8881360 1.669666e+00 5.7630204 72.454621
-    ## 10  Community.2 Trait.3          NA           NA        NA        NA
-    ## 11  Community.2 Trait.4   0.2546775 5.550581e-03 0.7447191  1.974249
-    ## 12  Community.2 Trait.5          NA           NA        NA        NA
-    ## 13  Community.2 Trait.6          NA           NA        NA        NA
-    ## 14  Community.2 Trait.7          NA           NA        NA        NA
-    ## 15  Community.3 Trait.1   0.3632065 3.431266e-02 0.4142637  2.012993
-    ## 16  Community.3 Trait.2   1.3657087 2.176708e+00 4.7863333 41.165863
-    ## 17  Community.3 Trait.3  25.2751153 3.490479e+01 0.5570684  3.036251
-    ## 18  Community.3 Trait.4   0.2560935 4.201779e-03 0.8421748  2.377324
-    ## 19  Community.3 Trait.5   0.1780019 1.168883e-03 0.6644317  3.194599
-    ## 20  Community.3 Trait.6 393.2426040 2.814202e+04 0.5837986  1.743921
+    ##           comID   Trait       mean     variance    skewness   kurtosis
+    ## 1   Community.1 Trait.1  0.3712632 3.780533e-02  0.98938208   2.879616
+    ## 2   Community.1 Trait.2  1.9322662 6.481573e+00  1.75531682   4.834195
+    ## 3   Community.1 Trait.3 25.2494601 7.361035e+01  1.75753106   5.510149
+    ## 4   Community.1 Trait.4  0.2665842 5.976908e-03  0.10385579   1.574355
+    ## 5   Community.1 Trait.5         NA           NA          NA         NA
+    ## 6   Community.2 Trait.1  0.3682247 2.280394e-02  0.91342645   2.827577
+    ## 7   Community.2 Trait.2  1.8881360 1.669666e+00  5.76302039  72.454621
+    ## 8   Community.2 Trait.3         NA           NA          NA         NA
+    ## 9   Community.2 Trait.4  0.2546775 5.550581e-03  0.74471912   1.974249
+    ## 10  Community.2 Trait.5         NA           NA          NA         NA
+    ## 11  Community.3 Trait.1  0.3632065 3.431266e-02  0.41426372   2.012993
+    ## 12  Community.3 Trait.2  1.3657087 2.176708e+00  4.78633333  41.165863
+    ## 13  Community.3 Trait.3 25.2751153 3.490479e+01  0.55706837   3.036251
+    ## 14  Community.3 Trait.4  0.2560935 4.201779e-03  0.84217477   2.377324
+    ## 15  Community.3 Trait.5  0.1780019 1.168883e-03  0.66443173   3.194599
+    ## 16  Community.4 Trait.1  0.3811159 3.637074e-02  0.91192932   3.032825
+    ## 17  Community.4 Trait.2  1.9149424 4.877729e+00  2.45813728   7.842963
+    ## 18  Community.4 Trait.3 23.2770717 2.514515e+01  0.32854089   2.266522
+    ## 19  Community.4 Trait.4  0.2426073 3.315517e-03  1.31765879   4.098928
+    ## 20  Community.4 Trait.5         NA           NA          NA         NA
+    ## 21  Community.5 Trait.1  0.5123564 2.075514e-02 -0.52523160   3.467144
+    ## 22  Community.5 Trait.2  0.7964910 8.282322e-01 11.74055221 244.251535
+    ## 23  Community.5 Trait.3 28.5550640 2.983875e+01  0.12994791   3.185149
+    ## 24  Community.5 Trait.4  0.3125389 2.728426e-03 -1.14899500   4.681040
+    ## 25  Community.5 Trait.5  0.1692971 3.986114e-04  2.60207545  23.675103
+    ## 26  Community.6 Trait.1  0.4751660 1.536154e-02 -0.13422348   1.974321
+    ## 27  Community.6 Trait.2  1.4579151 6.362446e+00  4.74332609  29.728553
+    ## 28  Community.6 Trait.3 26.4892505 3.865231e+01  0.71434242   3.441101
+    ## 29  Community.6 Trait.4  0.3282806 2.820161e-03 -1.78864057   6.968988
+    ## 30  Community.6 Trait.5  0.1689189 1.002290e-03  3.71845707  22.986226
+    ## 31  Community.7 Trait.1  0.4867108 3.661700e-02  0.05389482   1.941473
+    ## 32  Community.7 Trait.2  1.0830827 1.418119e+00 10.38528467 165.748308
+    ## 33  Community.7 Trait.3 26.3596603 4.028090e+01  0.31419716   3.103910
+    ## 34  Community.7 Trait.4  0.3162772 3.907929e-03 -0.77250825   2.970131
+    ## 35  Community.7 Trait.5  0.1732276 2.826972e-04  6.05395969  74.701652
+    ## 36  Community.8 Trait.1  0.4470184 4.556242e-02 -0.08312923   2.007559
+    ## 37  Community.8 Trait.2  1.6316159 6.644627e+00  3.76910300  21.119290
+    ## 38  Community.8 Trait.3 28.2136862 2.834465e+01  2.24542009   9.976632
+    ## 39  Community.8 Trait.4  0.2530926 4.727002e-03  0.57915360   2.617470
+    ## 40  Community.8 Trait.5         NA           NA          NA         NA
+    ## 41  Community.9 Trait.1  0.4290831 4.832341e-02 -0.02898023   1.857378
+    ## 42  Community.9 Trait.2  0.8764628 9.730774e-01  2.74105189  18.420953
+    ## 43  Community.9 Trait.3 29.5086444 4.347725e+01 -0.80381346   3.550452
+    ## 44  Community.9 Trait.4  0.2411785 7.306505e-03  0.16028865   1.228298
+    ## 45  Community.9 Trait.5         NA           NA          NA         NA
 
 ### Second: with settings to control the trade-off between reliable results and the number of NAs obtained
 
@@ -212,30 +231,55 @@ result2 <- trait_moments(communities = communities, traits = traits, n_species =
     ## higher moments. Consider to increase 'n_species'.
 
 ``` r
-result2[1:20,1:ncol(result2)]
+result2
 ```
 
-    ##           comID   Trait        mean     variance   skewness  kurtosis
-    ## 1   Community.1 Trait.1   0.3712632 3.780533e-02  0.9893821  2.879616
-    ## 2   Community.1 Trait.2   1.9322662 6.481573e+00  1.7553168  4.834195
-    ## 3   Community.1 Trait.3  25.2494601 7.361035e+01  1.7575311  5.510149
-    ## 4   Community.1 Trait.4   0.2665842 5.976908e-03  0.1038558  1.574355
-    ## 5   Community.1 Trait.5   0.1703279 7.715864e-04  2.3762906  7.498506
-    ## 6   Community.1 Trait.6 526.1652640 4.385980e+04 -0.2971057  1.896046
-    ## 7   Community.1 Trait.7  46.9193074 2.883443e+02  2.6094318 12.104186
-    ## 8   Community.2 Trait.1   0.3682247 2.280394e-02  0.9134265  2.827577
-    ## 9   Community.2 Trait.2   1.8881360 1.669666e+00  5.7630204 72.454621
-    ## 10  Community.2 Trait.3  24.2974731           NA         NA        NA
-    ## 11  Community.2 Trait.4   0.2546775 5.550581e-03  0.7447191  1.974249
-    ## 12  Community.2 Trait.5   0.1709812           NA         NA        NA
-    ## 13  Community.2 Trait.6 449.8115659           NA         NA        NA
-    ## 14  Community.2 Trait.7  50.5679543           NA         NA        NA
-    ## 15  Community.3 Trait.1   0.3632065 3.431266e-02  0.4142637  2.012993
-    ## 16  Community.3 Trait.2   1.3657087 2.176708e+00  4.7863333 41.165863
-    ## 17  Community.3 Trait.3  25.2751153 3.490479e+01  0.5570684  3.036251
-    ## 18  Community.3 Trait.4   0.2560935 4.201779e-03  0.8421748  2.377324
-    ## 19  Community.3 Trait.5   0.1780019 1.168883e-03  0.6644317  3.194599
-    ## 20  Community.3 Trait.6 393.2426040 2.814202e+04  0.5837986  1.743921
+    ##           comID   Trait       mean     variance    skewness   kurtosis
+    ## 1   Community.1 Trait.1  0.3712632 3.780533e-02  0.98938208   2.879616
+    ## 2   Community.1 Trait.2  1.9322662 6.481573e+00  1.75531682   4.834195
+    ## 3   Community.1 Trait.3 25.2494601 7.361035e+01  1.75753106   5.510149
+    ## 4   Community.1 Trait.4  0.2665842 5.976908e-03  0.10385579   1.574355
+    ## 5   Community.1 Trait.5  0.1703279 7.715864e-04  2.37629059   7.498506
+    ## 6   Community.2 Trait.1  0.3682247 2.280394e-02  0.91342645   2.827577
+    ## 7   Community.2 Trait.2  1.8881360 1.669666e+00  5.76302039  72.454621
+    ## 8   Community.2 Trait.3 24.2974731           NA          NA         NA
+    ## 9   Community.2 Trait.4  0.2546775 5.550581e-03  0.74471912   1.974249
+    ## 10  Community.2 Trait.5  0.1709812           NA          NA         NA
+    ## 11  Community.3 Trait.1  0.3632065 3.431266e-02  0.41426372   2.012993
+    ## 12  Community.3 Trait.2  1.3657087 2.176708e+00  4.78633333  41.165863
+    ## 13  Community.3 Trait.3 25.2751153 3.490479e+01  0.55706837   3.036251
+    ## 14  Community.3 Trait.4  0.2560935 4.201779e-03  0.84217477   2.377324
+    ## 15  Community.3 Trait.5  0.1780019 1.168883e-03  0.66443173   3.194599
+    ## 16  Community.4 Trait.1  0.3811159 3.637074e-02  0.91192932   3.032825
+    ## 17  Community.4 Trait.2  1.9149424 4.877729e+00  2.45813728   7.842963
+    ## 18  Community.4 Trait.3 23.2770717 2.514515e+01  0.32854089   2.266522
+    ## 19  Community.4 Trait.4  0.2426073 3.315517e-03  1.31765879   4.098928
+    ## 20  Community.4 Trait.5  0.1637136 4.888119e-04  1.74768482   5.494235
+    ## 21  Community.5 Trait.1  0.5123564 2.075514e-02 -0.52523160   3.467144
+    ## 22  Community.5 Trait.2  0.7964910 8.282322e-01 11.74055221 244.251535
+    ## 23  Community.5 Trait.3 28.5550640 2.983875e+01  0.12994791   3.185149
+    ## 24  Community.5 Trait.4  0.3125389 2.728426e-03 -1.14899500   4.681040
+    ## 25  Community.5 Trait.5  0.1692971 3.986114e-04  2.60207545  23.675103
+    ## 26  Community.6 Trait.1  0.4751660 1.536154e-02 -0.13422348   1.974321
+    ## 27  Community.6 Trait.2  1.4579151 6.362446e+00  4.74332609  29.728553
+    ## 28  Community.6 Trait.3 26.4892505 3.865231e+01  0.71434242   3.441101
+    ## 29  Community.6 Trait.4  0.3282806 2.820161e-03 -1.78864057   6.968988
+    ## 30  Community.6 Trait.5  0.1689189 1.002290e-03  3.71845707  22.986226
+    ## 31  Community.7 Trait.1  0.4867108 3.661700e-02  0.05389482   1.941473
+    ## 32  Community.7 Trait.2  1.0830827 1.418119e+00 10.38528467 165.748308
+    ## 33  Community.7 Trait.3 26.3596603 4.028090e+01  0.31419716   3.103910
+    ## 34  Community.7 Trait.4  0.3162772 3.907929e-03 -0.77250825   2.970131
+    ## 35  Community.7 Trait.5  0.1732276 2.826972e-04  6.05395969  74.701652
+    ## 36  Community.8 Trait.1  0.4470184 4.556242e-02 -0.08312923   2.007559
+    ## 37  Community.8 Trait.2  1.6316159 6.644627e+00  3.76910300  21.119290
+    ## 38  Community.8 Trait.3 28.2136862 2.834465e+01  2.24542009   9.976632
+    ## 39  Community.8 Trait.4  0.2530926 4.727002e-03  0.57915360   2.617470
+    ## 40  Community.8 Trait.5         NA           NA          NA         NA
+    ## 41  Community.9 Trait.1  0.4290831 4.832341e-02 -0.02898023   1.857378
+    ## 42  Community.9 Trait.2  0.8764628 9.730774e-01  2.74105189  18.420953
+    ## 43  Community.9 Trait.3 29.5086444 4.347725e+01 -0.80381346   3.550452
+    ## 44  Community.9 Trait.4  0.2411785 7.306505e-03  0.16028865   1.228298
+    ## 45  Community.9 Trait.5  0.1766395 2.027965e-03  0.98848265   2.332157
 
 Conversely, the two arguments can also be used to apply stricter quality
 criteria. This could be appropriate if trait information is available
@@ -293,8 +337,8 @@ the density estimation:
 ``` r
 selected_results <- rbind(
   result1[1, 1:ncol(result1)],
-  result1[29, 1:ncol(result1)],
-  result1[57, 1:ncol(result1)]
+  result1[21, 1:ncol(result1)],
+  result1[41, 1:ncol(result1)]
   )
 
 # install.packages("PearsonDS") # Run if not yet installed
@@ -344,8 +388,8 @@ selected_results
 
     ##           comID   Trait      mean   variance    skewness kurtosis
     ## 1   Community.1 Trait.1 0.3712632 0.03780533  0.98938208 2.879616
-    ## 29  Community.5 Trait.1 0.5123564 0.02075514 -0.52523160 3.467144
-    ## 57  Community.9 Trait.1 0.4290831 0.04832341 -0.02898023 1.857378
+    ## 21  Community.5 Trait.1 0.5123564 0.02075514 -0.52523160 3.467144
+    ## 41  Community.9 Trait.1 0.4290831 0.04832341 -0.02898023 1.857378
 
 First, we can state that the density estimations based on calculated
 moments and the histograms based on species trait values and abundance
@@ -395,48 +439,16 @@ library(FD)
 functcomp(traits, as.matrix(communities))
 ```
 
-    ##                 Trait.1   Trait.2  Trait.3   Trait.4   Trait.5  Trait.6
-    ##  Community.1  0.3712632 1.9322662 25.24946 0.2665842 0.1703279 526.1653
-    ##  Community.2  0.3682247 1.8881360 24.29747 0.2546775 0.1709812 449.8116
-    ##  Community.3  0.3632065 1.3657087 25.27512 0.2560935 0.1780019 393.2426
-    ##  Community.4  0.3811159 1.9149424 23.27707 0.2426073 0.1637136 358.2514
-    ##  Community.5  0.5123564 0.7964910 28.55506 0.3125389 0.1692971 660.3667
-    ##  Community.6  0.4751660 1.4579151 26.48925 0.3282806 0.1689189 592.1743
-    ##  Community.7  0.4867108 1.0830827 26.35966 0.3162772 0.1732276 583.8424
-    ##  Community.8  0.4470184 1.6316159 28.21369 0.2530926 0.1792957 587.6828
-    ##  Community.9  0.4290831 0.8764628 29.50864 0.2411785 0.1766395 467.6702
-    ##  Community.10 0.4418119 1.4422199 26.44595 0.2931464 0.1644011 466.0580
-    ##  Community.11 0.3034360 1.1261080 21.52880 0.2275060 0.1656922 368.1995
-    ##  Community.12 0.3659137 0.7369823 25.47576 0.3027423 0.1868506 620.4438
-    ##  Community.13 0.5509309 1.5712642 30.09570 0.2964283 0.1757242 438.8306
-    ##  Community.14 0.7398152 1.3748145 22.68648 0.3307889 0.1668576 435.8533
-    ##  Community.15 0.3101390 0.3396962 20.72024 0.3590328 0.1601501 634.8599
-    ##  Community.16 0.5486278 2.5660729 28.55636 0.2842398 0.1660446 382.7780
-    ##  Community.17 0.2938275 1.3771540 20.33044 0.2581845 0.1547385 361.9837
-    ##  Community.18 0.3950641 1.2848238 21.12149 0.3476057 0.1634484 569.1079
-    ##  Community.19 0.3846099 1.3888590 22.07469 0.3042461 0.1666712 473.7587
-    ##  Community.20 0.4395533 2.2494183 25.05191 0.2843483 0.1741213 394.5652
-    ##                Trait.7
-    ##  Community.1  46.91931
-    ##  Community.2  50.56795
-    ##  Community.3  48.80059
-    ##  Community.4  54.04048
-    ##  Community.5  51.25072
-    ##  Community.6  61.46722
-    ##  Community.7  38.98142
-    ##  Community.8  42.05538
-    ##  Community.9  72.37432
-    ##  Community.10 75.95275
-    ##  Community.11 54.45343
-    ##  Community.12 46.08488
-    ##  Community.13 34.85688
-    ##  Community.14 63.81661
-    ##  Community.15 38.92802
-    ##  Community.16 33.70617
-    ##  Community.17 54.76690
-    ##  Community.18 56.43328
-    ##  Community.19 78.73747
-    ##  Community.20 82.01235
+    ##                Trait.1   Trait.2  Trait.3   Trait.4   Trait.5
+    ##  Community.1 0.3712632 1.9322662 25.24946 0.2665842 0.1703279
+    ##  Community.2 0.3682247 1.8881360 24.29747 0.2546775 0.1709812
+    ##  Community.3 0.3632065 1.3657087 25.27512 0.2560935 0.1780019
+    ##  Community.4 0.3811159 1.9149424 23.27707 0.2426073 0.1637136
+    ##  Community.5 0.5123564 0.7964910 28.55506 0.3125389 0.1692971
+    ##  Community.6 0.4751660 1.4579151 26.48925 0.3282806 0.1689189
+    ##  Community.7 0.4867108 1.0830827 26.35966 0.3162772 0.1732276
+    ##  Community.8 0.4470184 1.6316159 28.21369 0.2530926 0.1792957
+    ##  Community.9 0.4290831 0.8764628 29.50864 0.2411785 0.1766395
 
 As already stated above, in many cases it is advisable to set a
 threshold value of 80 % for the cumulative relative abundance. This can
@@ -455,30 +467,55 @@ result <- trait_moments(communities, traits, n_species = 0, abundance = 80)
     ## moments. Consider to increase 'n_species'.
 
 ``` r
-result[1:20,1:ncol(result)]
+result
 ```
 
-    ##           comID   Trait        mean variance skewness kurtosis
-    ## 1   Community.1 Trait.1   0.3712632       NA       NA       NA
-    ## 2   Community.1 Trait.2   1.9322662       NA       NA       NA
-    ## 3   Community.1 Trait.3  25.2494601       NA       NA       NA
-    ## 4   Community.1 Trait.4   0.2665842       NA       NA       NA
-    ## 5   Community.1 Trait.5          NA       NA       NA       NA
-    ## 6   Community.1 Trait.6          NA       NA       NA       NA
-    ## 7   Community.1 Trait.7          NA       NA       NA       NA
-    ## 8   Community.2 Trait.1   0.3682247       NA       NA       NA
-    ## 9   Community.2 Trait.2   1.8881360       NA       NA       NA
-    ## 10  Community.2 Trait.3          NA       NA       NA       NA
-    ## 11  Community.2 Trait.4   0.2546775       NA       NA       NA
-    ## 12  Community.2 Trait.5          NA       NA       NA       NA
-    ## 13  Community.2 Trait.6          NA       NA       NA       NA
-    ## 14  Community.2 Trait.7          NA       NA       NA       NA
-    ## 15  Community.3 Trait.1   0.3632065       NA       NA       NA
-    ## 16  Community.3 Trait.2   1.3657087       NA       NA       NA
-    ## 17  Community.3 Trait.3  25.2751153       NA       NA       NA
-    ## 18  Community.3 Trait.4   0.2560935       NA       NA       NA
-    ## 19  Community.3 Trait.5   0.1780019       NA       NA       NA
-    ## 20  Community.3 Trait.6 393.2426040       NA       NA       NA
+    ##           comID   Trait       mean variance skewness kurtosis
+    ## 1   Community.1 Trait.1  0.3712632       NA       NA       NA
+    ## 2   Community.1 Trait.2  1.9322662       NA       NA       NA
+    ## 3   Community.1 Trait.3 25.2494601       NA       NA       NA
+    ## 4   Community.1 Trait.4  0.2665842       NA       NA       NA
+    ## 5   Community.1 Trait.5         NA       NA       NA       NA
+    ## 6   Community.2 Trait.1  0.3682247       NA       NA       NA
+    ## 7   Community.2 Trait.2  1.8881360       NA       NA       NA
+    ## 8   Community.2 Trait.3         NA       NA       NA       NA
+    ## 9   Community.2 Trait.4  0.2546775       NA       NA       NA
+    ## 10  Community.2 Trait.5         NA       NA       NA       NA
+    ## 11  Community.3 Trait.1  0.3632065       NA       NA       NA
+    ## 12  Community.3 Trait.2  1.3657087       NA       NA       NA
+    ## 13  Community.3 Trait.3 25.2751153       NA       NA       NA
+    ## 14  Community.3 Trait.4  0.2560935       NA       NA       NA
+    ## 15  Community.3 Trait.5  0.1780019       NA       NA       NA
+    ## 16  Community.4 Trait.1  0.3811159       NA       NA       NA
+    ## 17  Community.4 Trait.2  1.9149424       NA       NA       NA
+    ## 18  Community.4 Trait.3 23.2770717       NA       NA       NA
+    ## 19  Community.4 Trait.4  0.2426073       NA       NA       NA
+    ## 20  Community.4 Trait.5         NA       NA       NA       NA
+    ## 21  Community.5 Trait.1  0.5123564       NA       NA       NA
+    ## 22  Community.5 Trait.2  0.7964910       NA       NA       NA
+    ## 23  Community.5 Trait.3 28.5550640       NA       NA       NA
+    ## 24  Community.5 Trait.4  0.3125389       NA       NA       NA
+    ## 25  Community.5 Trait.5  0.1692971       NA       NA       NA
+    ## 26  Community.6 Trait.1  0.4751660       NA       NA       NA
+    ## 27  Community.6 Trait.2  1.4579151       NA       NA       NA
+    ## 28  Community.6 Trait.3 26.4892505       NA       NA       NA
+    ## 29  Community.6 Trait.4  0.3282806       NA       NA       NA
+    ## 30  Community.6 Trait.5  0.1689189       NA       NA       NA
+    ## 31  Community.7 Trait.1  0.4867108       NA       NA       NA
+    ## 32  Community.7 Trait.2  1.0830827       NA       NA       NA
+    ## 33  Community.7 Trait.3 26.3596603       NA       NA       NA
+    ## 34  Community.7 Trait.4  0.3162772       NA       NA       NA
+    ## 35  Community.7 Trait.5  0.1732276       NA       NA       NA
+    ## 36  Community.8 Trait.1  0.4470184       NA       NA       NA
+    ## 37  Community.8 Trait.2  1.6316159       NA       NA       NA
+    ## 38  Community.8 Trait.3 28.2136862       NA       NA       NA
+    ## 39  Community.8 Trait.4  0.2530926       NA       NA       NA
+    ## 40  Community.8 Trait.5         NA       NA       NA       NA
+    ## 41  Community.9 Trait.1  0.4290831       NA       NA       NA
+    ## 42  Community.9 Trait.2  0.8764628       NA       NA       NA
+    ## 43  Community.9 Trait.3 29.5086444       NA       NA       NA
+    ## 44  Community.9 Trait.4  0.2411785       NA       NA       NA
+    ## 45  Community.9 Trait.5         NA       NA       NA       NA
 
 We receive a warning that CWMs but no moments can be calculated if we
 set ‘n_species = 0’. Since this is our goal in this special case we can
