@@ -525,7 +525,7 @@ reliable results (level can be chosen by the user), it returns NAs. If
 we set ‘n_species = 0’ and ‘abundance = 0’, the two functions return
 exactly the same result.
 
-# Further development
+## Further development
 
 As TraitMoments is still under development, please let me know if you
 encounter any bugs or problems. If bugs occur with v0.0.2 please revert
@@ -533,7 +533,7 @@ to v0.0.1 which should run stable. For later versions I intend to
 implement the visualisation of trait distributions as a custom function
 in TraitMoments.
 
-# Citation
+## Citation
 
 Please cite as:
 
@@ -541,7 +541,7 @@ Please cite as:
 > trait distribution moments. Available from:
 > <https://github.com/SchreinerFR/TraitMoments>.
 
-# References
+## References
 
 Bello, F. de, Carmona, C.P., Dias, A.T.C., Götzenberger, L., Moretti, M.
 & Berg, M.P. (2021) Handbook of Trait-Based Ecology. Cambridge
