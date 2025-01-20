@@ -2,8 +2,10 @@ Package: TraitMoments
 Title: Efficient calculation of trait distributions moments
 Version: 0.0.2
 Authors@R: 
+    c(
     person("Falk-Rudhard", "Schreiner", email = "fschrein@uni-muenster.de", role = c("aut", "cre"), comment = c(ORCID = "0009-0006-7407-1153")),
-    person("Lena", "Neuenkamp", role = c("ctb"), comment = c(ORCID = "0000-0001-6108-5720")),
+    person("Lena", "Neuenkamp", role = c("ctb"), comment = c(ORCID = "0000-0001-6108-5720"))
+    )
 Description: Efficient calculation and visualisation of trait distributions moments.
 License: `use_gpl3_license()` 
 Encoding: UTF-8
