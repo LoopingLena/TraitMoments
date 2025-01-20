@@ -93,29 +93,6 @@ Install the latest version from GitHub:
 devtools::install_github("SchreinerFR/TraitMoments")
 ```
 
-    ## rlang (1.1.4 -> 1.1.5) [CRAN]
-    ## glue  (1.7.0 -> 1.8.0) [CRAN]
-    ## Paket 'rlang' erfolgreich ausgepackt und MD5 Summen abgeglichen
-    ## Paket 'glue' erfolgreich ausgepackt und MD5 Summen abgeglichen
-    ## 
-    ## Die heruntergeladenen Binärpakete sind in 
-    ##  C:\Users\fschrein\AppData\Local\Temp\Rtmpkp8emp\downloaded_packages
-    ## ── R CMD build ─────────────────────────────────────────────────────────────────
-    ##       ✔  checking for file 'C:\Users\fschrein\AppData\Local\Temp\Rtmpkp8emp\remotes2fdc4d1a3a04\SchreinerFR-TraitMoments-660ba1d/DESCRIPTION' (462ms)
-    ##       ─  preparing 'TraitMoments':
-    ##    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
-    ##       ─  checking for LF line-endings in source and make files and shell scripts
-    ##   ─  checking for empty or unneeded directories
-    ## ─  looking to see if a 'data/datalist' file should be added
-    ##      NB: this package now depends on R (>=        NB: this package now depends on R (>= 3.5.0)
-    ##        WARNING: Added dependency on R >= 3.5.0 because serialized objects in
-    ##      serialize/load version 3 cannot be read in older versions of R.
-    ##      File(s) containing such objects:
-    ##      'TraitMoments/data/trait_moments_data.rda'         'TraitMoments/data/trait_moments_data.rda'
-    ## ─  building 'TraitMoments_0.0.2.tar.gz'
-    ##      
-    ## 
-
 ## Load package and view documentation
 
 Load the package and call the documentation for the functions
